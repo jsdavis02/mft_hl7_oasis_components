@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  h1= title
+  h1 Welcome to Code Table View
+  h4
+    a.btn.btn-success.rounded(href='/code_tables/add') Add New Entry
+  h4
+    a.btn.btn-success.rounded(href='/code_tables/upload_csv') Upload CSV file
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th Input
+        th Output
+        th.text-nowrap Lookup Key
+            select.form-control-sm(name="lookup_key_filter", id="lookup_key_filter", onchange="window.location.href=this.value")
+              option(value="/code_tables", selected=(wparms['lookup_key'] === undefined)) All
+              each code_table_key in code_table_keys
+                option(value=`/code_tables?lookup_key=${code_table_key.lookup_key}`, selected=(wparms['lookup_key'] === code_table_key.lookup_key)) #{code_table_key.lookup_key}
+        th Environment
+    tbody
+      each code_table in code_tables
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/code_tables/view?id=${code_table.id}`) View 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/code_tables/edit?id=${code_table.id}`) Edit
+          td #{code_table.id}
+          td #{code_table.input}
+          td #{code_table.output}
+          td #{code_table.lookup_key}
+          td #{code_table.env}
+          
+            

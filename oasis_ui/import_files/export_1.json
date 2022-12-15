@@ -1,0 +1,281 @@
+[
+  {
+    "endpoint": {
+      "id": 854,
+      "organization": "",
+      "software": "",
+      "doclink": "",
+      "subsystem": null,
+      "active": true,
+      "alert_level": 3,
+      "description": "/nfs/epic_rpt/transfer",
+      "direction": "producer",
+      "bw_process_ident": "MFT-FS-HB-MDS-REPORTS",
+      "receiving_app": "",
+      "receiving_facility": "",
+      "name": "Epic source for HB_MDS reports",
+      "type": "MFT-FS",
+      "portmon_host": null,
+      "portmon_time": null,
+      "bw_app_ident": null,
+      "analysts": []
+    },
+    "endpointprops": [
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4403,
+        "fields": {
+          "endpoint": 854,
+          "name": "fs_path",
+          "value": "/nfs/epic/transfer/HB_MDS_*",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4404,
+        "fields": {
+          "endpoint": 854,
+          "name": "fs_file_filter",
+          "value": "sendhb_mds_files",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4405,
+        "fields": {
+          "endpoint": 854,
+          "name": "audit_persist",
+          "value": "true",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4406,
+        "fields": {
+          "endpoint": 854,
+          "name": "delete_fs_source",
+          "value": "false",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      }
+    ],
+    "routes": [
+      {
+        "route": {
+          "id": 607,
+          "producer": 854,
+          "consumer": 371,
+          "producer_messagetypemessagecode": "MFT",
+          "producer_messagetypetriggerevent": "FS",
+          "consumer_messagetypemessagecode": "MFT",
+          "consumer_messagetypetriggerevent": "SFTP",
+          "hascriteria": false,
+          "active": true,
+          "hassplit": false,
+          "hastranslation": false,
+          "type": "MFT",
+          "name": "MFT-FS-HB-MDS-REPORTS-MFT-FS-MFT-SFTP-MED-DAT-SYS-IN-MFT-SFTP",
+          "description": "sendHB_MDS_reports"
+        },
+        "routeprops": [
+          {
+            "model": "OASIS.routeprop",
+            "pk": 1120,
+            "fields": {
+              "route": 607,
+              "name": "mft_script",
+              "value": "mft_ops_copy.py",
+              "env": "DEV",
+              "created_at": null,
+              "updated_at": null
+            }
+          }
+        ]
+      }
+    ],
+    "mftschedules": [
+      {
+        "model": "OASIS.mftschedule",
+        "pk": 771,
+        "fields": {
+          "endpoint": 854,
+          "name": "",
+          "active": false,
+          "freq_type": "Specific_Date_and_Time",
+          "freq_interval": 0,
+          "spec_date": "2020-10-08",
+          "spec_time": "10:11:00",
+          "last_run": "2020-10-08T10:11:26Z",
+          "sub_day_freq_type": "None",
+          "sub_day_freq_interval": null,
+          "sub_day_stop_schedule": null,
+          "sub_day_start_time": null,
+          "sub_day_end_time": null,
+          "last_files_found": "2020-10-08T10:11:26Z",
+          "sub_day_last_run": null,
+          "pause_start": null,
+          "pause_end": null,
+          "sub_freq_interval": 0,
+          "first_run": null,
+          "first_files_found": null,
+          "created_at": null,
+          "updated_at": null
+        }
+      }
+    ]
+  },
+  {
+    "endpoint": {
+      "id": 853,
+      "organization": "",
+      "software": "",
+      "doclink": "",
+      "subsystem": null,
+      "active": true,
+      "alert_level": 3,
+      "description": "",
+      "direction": "consumer",
+      "bw_process_ident": "MFT-SFTP-NTHRIVE-835",
+      "receiving_app": "",
+      "receiving_facility": "",
+      "name": "MedAssets destination for ERA 835 data",
+      "type": "MFT-SFTP-Client",
+      "portmon_host": null,
+      "portmon_time": null,
+      "bw_app_ident": null,
+      "analysts": []
+    },
+    "endpointprops": [
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4384,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_path",
+          "value": "/835/",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4385,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_host",
+          "value": "virps0esb30i03",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4386,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_port",
+          "value": "2222",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4387,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_username",
+          "value": "MFT-SFTP-EPIC-CLNICS-1-DEV",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4388,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_host",
+          "value": "sftp.nthrive.com",
+          "env": "PRD",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4389,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_username",
+          "value": "s7554",
+          "env": "PRD",
+          "created_at": null,
+          "updated_at": null
+        }
+      },
+      {
+        "model": "OASIS.endpointprop",
+        "pk": 4390,
+        "fields": {
+          "endpoint": 853,
+          "name": "sftp_password",
+          "value": "L4B3nC+KURti15CfGYH9h7PV9VB+OA+y:MJUmb0jviEASPXKZc2cTVoeoVb/nqrt+",
+          "env": "DEV",
+          "created_at": null,
+          "updated_at": null
+        }
+      }
+    ],
+    "routes": [
+      {
+        "route": {
+          "id": 606,
+          "producer": 852,
+          "consumer": 853,
+          "producer_messagetypemessagecode": "MFT",
+          "producer_messagetypetriggerevent": "FS",
+          "consumer_messagetypemessagecode": "MFT",
+          "consumer_messagetypetriggerevent": "SFTP",
+          "hascriteria": false,
+          "active": true,
+          "hassplit": false,
+          "hastranslation": false,
+          "type": "MFT",
+          "name": "MFT-FS-OUTGOING-ERA-835-MFT-FS-MFT-SFTP-NTHRIVE-835-MFT-SFTP",
+          "description": "from Epic to nThrive ERA 835"
+        },
+        "routeprops": [
+          {
+            "model": "OASIS.routeprop",
+            "pk": 1119,
+            "fields": {
+              "route": 606,
+              "name": "mft_script",
+              "value": "mft_ops_copy.py",
+              "env": "DEV",
+              "created_at": null,
+              "updated_at": null
+            }
+          }
+        ]
+      }
+    ],
+    "mftschedules": []
+  }
+]

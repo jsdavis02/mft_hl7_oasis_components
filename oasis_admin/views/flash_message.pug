@@ -1,0 +1,5 @@
+mixin flash_message
+  if error_message
+    h3.alert-danger #{error_message}
+  if success_message
+    h3.alert-info #{success_message}

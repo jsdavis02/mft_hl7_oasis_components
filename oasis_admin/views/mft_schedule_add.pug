@@ -1,0 +1,113 @@
+extends layout
+
+block content
+  script(src='/javascripts/mft_schedules.js')
+  h1= title
+  p Welcome to Add MFT Schedule View
+    if error_message
+      h3.alert-danger #{error_message}
+    form.w-50(name="mft_schedule_add", method="post")
+      input.form-control(name="redirect", id="redirect", type="hidden", value=`${redirect}`)
+      div.input-group-lg
+        span.col-form-label-lg Is Schedule Active
+        input.form-check-inline(name="active", type="checkbox")
+      div.input-group-lg
+        span.col-form-label-lg Endpoint 
+        select.form-control(name="endpoint_id", id="endpoint_id")
+          each endpoint in endpoints
+            option(value=endpoint.id, selected=(endpoint.id === endpoint_id)) #{endpoint.bw_process_ident}
+      div.input-group-sm
+        span.col-form-label-sm MFT Schedule Name (General name) 
+        input.form-control(name="name", id="name", type="text")
+      div(id="div_freq_type").input-group-lg
+        span.col-form-label-lg Frequency Type 
+        select.form-control(name="freq_type", id="freq_type")
+          each frequency_type in frequency_types
+            option #{frequency_type}
+      div(id="div_freq_interval_minutes").input-group-lg
+        span.col-form-label-lg Frequency Interval (Minutes) 
+        select.form-control(name="freq_interval_minutes", id="freq_interval_minutes")
+          - for (var x = 1; x < 60; x++)
+            option #{x}
+      div(id="div_freq_interval_hours").input-group-lg
+        span.col-form-label-lg Frequency Interval (Hours) 
+        select.form-control(name="freq_interval_hours", id="freq_interval_hours")
+          - for (var x = 1; x < 24; x++)
+            option #{x}
+      div(id="div_freq_interval_days").input-group-lg
+        span.col-form-label-lg Frequency Interval (Daily) 
+        select.form-control(name="freq_interval_days", id="freq_interval_days")
+          - for (var x = 1; x <= 365; x++)
+            option #{x}
+      div(id="div_freq_interval_monthly_weekly").input-group-lg
+        span.col-form-label-lg Frequency Interval (nth weekday of month) 
+        select.form-control(name="freq_interval_monthly_weekly", id="freq_interval_monthly_weekly")
+          each monthly_weekly_option in monthly_weekly_options
+            option(value=`${monthly_weekly_option.value}`) #{monthly_weekly_option.label}
+      div(id="div_sub_freq_interval_monthly_weekly").input-group-lg
+        span.col-form-label-lg Frequency Interval (Monthly_Weekly) 
+        select.form-control(name="sub_freq_interval_monthly_weekly", id="sub_freq_interval_monthly_weekly")
+          each weekday in weekdays
+            option(value=`${weekday.value}`) #{weekday.label}
+      div(id="div_freq_interval_weekly").input-group-lg
+        span.col-form-label-lg Frequency Interval (Weekly) 
+        select.form-control(name="freq_interval_weekly", id="freq_interval_weekly")
+          each weekday in weekdays
+            option(value=`${weekday.value}`) #{weekday.label}
+      div(id="div_multi_freq_interval_weekly").input-group-lg
+        span.col-form-label-lg Frequency Interval (Weekly) 
+        select.form-control(name="multi_freq_interval_weekly", id="multi_freq_interval_weekly", multiple="multiple")
+          each weekday in weekdays
+            option(value=`${weekday.value}`) #{weekday.label}
+      div(id="div_freq_interval_monthly").input-group-lg
+        span.col-form-label-lg Frequency Interval (Monthly) 
+        select.form-control(name="freq_interval_monthly", id="freq_interval_monthly")
+          option(value=-1) Month End
+          - for (var x = 1; x <= 31; x++)
+            option #{x}
+      div(id="div_sub_day_freq_type").input-group-lg
+        span.col-form-label-lg Sub Day Frequency Type 
+        select.form-control(name="sub_day_freq_type", id="sub_day_freq_type")
+          each sub_day_frequency_type in sub_day_frequency_types
+            option #{sub_day_frequency_type}
+      div(id="div_sub_day_stop_schedule").input-group-lg
+        span.col-form-label-lg Stop Sub Day Schedule When File(s) Found
+        input.form-check-inline(name="sub_day_stop_schedule", type="checkbox")
+      div(id="div_sub_day_freq_interval_minutes").input-group-lg
+        span.col-form-label-sm Sub Day Frequency Interval (Minutes) 
+        select.form-control(name="sub_day_freq_interval_minutes", id="sub_day_freq_interval_minutes")
+          - for (var x = 1; x < 60; x++)
+            option #{x}
+      div(id="div_sub_day_freq_interval_hours").input-group-lg
+        span.col-form-label-sm Sub Day Frequency Interval (Hours) 
+        select.form-control(name="sub_day_freq_interval_hours", id="sub_day_freq_interval_hours")
+          - for (var x = 1; x <= 12; x++)
+            option #{x}
+      div(id="div_sub_day_start_time").input-group-lg
+        span.col-form-label-sm Sub Day Schedule Start Time (optional)
+        input.form-control(name="sub_day_start_time", id="sub_day_start_time", type="time")
+      div(id="div_sub_day_end_time").input-group-lg
+        span.col-form-label-sm Sub Day Schedule End Time (optional)
+        input.form-control(name="sub_day_end_time", id="sub_day_end_time", type="time") 
+      div(id="div_spec_date").input-group-lg
+        span.col-form-label-lg Specific Date
+        input.form-control(name="spec_date", id="spec_date", type="date")
+      div(id="div_multi_times_count").input-group-lg
+        span.col-form-label-sm How many times per day
+        select.form-control(name="multi_time_count", id="multi_time_count")
+          - for (var x = 1; x < 24; x++)
+            option #{x}
+      div(id="div_spec_time").input-group-lg
+        span.col-form-label-lg Specific Time
+        input.form-control(name="spec_time", id="spec_time", type="time")
+      div(id="div_multi_spec_time").input-group-lg
+        span.col-form-label-lg Multiple Times in Day
+      div(id="div_pause_start").input-group-lg
+        span.col-form-label-sm Schedule Pause Start (optional) 
+        input.form-control(name="pause_start", id="pause_start", type="time")
+      div(id="div_pause_end").input-group-lg
+        span.col-form-label-sm Schedule Pause End Time (optional)
+        input.form-control(name="pause_end", id="pause_end", type="time")
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit", type="submit")
+      

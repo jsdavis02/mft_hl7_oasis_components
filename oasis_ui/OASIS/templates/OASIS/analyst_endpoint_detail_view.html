@@ -1,0 +1,285 @@
+{% extends 'OASIS/analyst_template.html' %}
+
+{% block content %}
+{% load static %}
+{% load templatehelpers %}
+                        <script src="{% static 'js/analyst_endpoint_detail_view.js' %}"></script>
+                        <h1 class="mt-4">{{ Endpoint.bw_process_ident }}</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'analyst-endpoint-list-view' %}">Your Endpoints</a></li>
+                            <li class="breadcrumb-item active">End Point Detail</li>
+                        </ol>
+                        <h3>Configuration</h3>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold">End Point ID:</td>
+                                                    <td>{{ Endpoint.id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Identifier:</td>
+                                                    <td>{{ Endpoint.bw_process_ident }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Alert Level:</td>
+                                                    <td>{{ Endpoint.alert_level }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold">Active:</td>
+                                                    <td>{{ Endpoint.active }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Name:</td>
+                                                    <td>{{ Endpoint.name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Description:</td>
+                                                    <td>{{ Endpoint.description }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold">Type:</td>
+                                                    <td>{{ Endpoint.type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Direction:</td>
+                                                    <td>{{ Endpoint.direction }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Doc Link:</td>
+                                                    <td>{{ Endpoint.doclink }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if Properties %}
+                        <h3>Properties</h3>
+                        <table class="table table-striped" id="properties">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                    <th>Environment</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                    <th>Environment</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for prop in Properties %}
+                                    <tr>
+                                        <td>{{prop.id}}</td>
+                                        <td>{{prop.name}}</td>
+                                        <td>{{prop.value}}</td>
+                                        <td>{{prop.env}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+
+                        {% if Routes %}
+                        <h3 class="mt-4">Routes</h3>
+                        <table class="table table-striped" id="routes">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Active</th>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Producer</th>
+                                <th>Consumer</th>
+                            </tr>
+                            </thead>
+                            <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Active</th>
+                                <th>Type</th>
+                                <th>Name</th>
+                                <th>Producer</th>
+                                <th>Consumer</th>
+                            </tr>
+                            </tfoot>
+                            <tbody>
+                            {% for route in Routes %}
+                            <tr>
+                                <td>{{route.id}}</td>
+                                <td>{{route.active}}</td>
+                                <td>{{route.type}}</td>
+                                <td>{{route.name}}</td>
+                                <td>
+                                    {% if Endpoint.id != route.producer.id %}
+                                        <a href="{% url 'analyst-endpoint-detail-view' route.producer.id %}">{{route.producer.bw_process_ident}}</a>
+                                    {% else %}
+                                        {{route.producer.bw_process_ident}}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if Endpoint.id != route.consumer.id %}
+                                        <a href="{% url 'analyst-endpoint-detail-view' route.consumer.id %}">{{route.producer.bw_process_ident}}</a>
+                                    {% else %}
+                                        {{route.consumer.bw_process_ident}}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+    
+                        {% if Schedules %}
+                        <h3 class="mt-4">Schedules</h3>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                {% for row in sched_rows %}
+                                    <div class="row">
+                                        {% for s in scheds_by_row|get_dict_item:forloop.counter %}
+                                        <div class="col-sm">
+                                            <table class="table table-sm table-bordered table-striped">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="font-weight-bold">Schedule ID:</td>
+                                                        <td>{{s.id}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold">Active:</td>
+                                                        <td>{{s.active}}</td>
+                                                    </tr>
+                                                    {% if s.name %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Name:</td>
+                                                        <td>{{s.name}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Frequency Type:</td>
+                                                        <td>{{s.get_freq_type_display}}</td>
+                                                    </tr>
+                                                    {% if s.freq_interval %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Frequency Interval:</td>
+                                                        <td>{{s.freq_interval}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.sub_freq_interval %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Sub Freq Interval:</td>
+                                                        <td>{{s.sub_freq_interval}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.spec_date %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Specific Date:</td>
+                                                        <td>{{s.spec_date}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.spec_time %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Specific Time:</td>
+                                                        <td>{{s.spec_time}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.pause_start %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Pause Start:</td>
+                                                        <td>{{s.pause_start}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.pause_end %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Pause End:</td>
+                                                        <td>{{s.pause_end}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.sub_day_freq_type %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Sub Day Freq Type:</td>
+                                                        <td>{{s.sub_day_freq_type}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.sub_day_freq_interval %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Sub Day Freq Int:</td>
+                                                        <td>{{s.sub_day_freq_interval}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.sub_day_stop_schedule %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Sub Day Stop:</td>
+                                                        <td>{{s.sub_day_stop_schedule}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.sub_day_start_time %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Sub Day Start Time:</td>
+                                                        <td>{{s.sub_day_start_time}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    {% if s.sub_day_end_time %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">Sub Day End Time:</td>
+                                                        <td>{{s.sub_day_end_time}}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                    <tr>
+                                                        <td class="font-weight-bold">First Run:</td>
+                                                        <td>{{s.first_run}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold">First Time Files Found:</td>
+                                                        <td>{{s.first_files_found}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold">Last Run:</td>
+                                                        <td>{{s.last_run}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold">Last Time Files Found:</td>
+                                                        <td>{{s.last_files_found}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold">Created:</td>
+                                                        <td>{{s.created_at}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="font-weight-bold">Modified:</td>
+                                                        <td>{{s.modified_at}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+{% endblock content %}

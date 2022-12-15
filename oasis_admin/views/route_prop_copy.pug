@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+  h1= title
+  h2(style="color: orange;") Copy Route Property
+    h4 Route Prop Name: #{route_prop.name}
+    h4 Route Prop Value: #{route_prop.value}
+    h4 Route Prop Environment: #{route_prop.env}
+    form.w-50(name="route_prop_copy", method="post")
+      input.form-control(name="name", id="name", type="hidden" ,value=`${route_prop.name}`)
+      input.form-control(name="value", id="value", type="hidden", value=`${route_prop.value}`)
+      input.form-control(name="env", id="env", type="hidden", value=`${route_prop.env}`)
+      div.input-group-sm
+        span.col-form-label-sm Environment
+        select.form-control(name="route[]", id="route" multiple="multiple" size=30)
+          each route in routes
+            option(value=route.id) #{route.name}
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

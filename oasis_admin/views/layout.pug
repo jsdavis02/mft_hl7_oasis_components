@@ -1,0 +1,55 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    script(src='/javascripts/jquery-3.4.1.min.js')
+    script(src='/javascripts/bootstrap.min.js')
+  body
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">OASIS - <span class="btn-info p-1 rounded"> #{process.env.NODE_ENV.toUpperCase()}</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle href="#" id="homeDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home</a>
+            <div class="dropdown-menu" aria-labelledby="homeDropdownMenuLink">
+              <a class="dropdown-item" href="/">Dashboard</a>
+              <a class="dropdown-item" href="/auth/login">Login</a>
+              <a class="dropdown-item" href="/auth/logout">Logout</a>
+            </div>
+          </div>
+          
+          <a class="nav-item nav-link" href="/users">Users</a>
+          <a class="nav-item nav-link" href="/app_settings">Settings</a>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle href="#" id="dbusDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data Bus Configs</a>
+            <div class="dropdown-menu" aria-labelledby="dbusDropdownMenuLink">
+              <a class="dropdown-item" href="/endpoints">Endpoints</a>
+              <a class="dropdown-item" href="/routes">Routes</a>
+              <a class="dropdown-item" href="/mft_schedules">MFT Schedules</a>
+              <a class="dropdown-item" href="/code_tables">Code Tables</a>
+            </div>
+          </div>
+          
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle href="#" id="auditDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Audit Log</a>
+            <div class="dropdown-menu" aria-labelledby="auditDropdownMenuLink">
+              <a class="dropdown-item" href="/audit">Admin Audit Log</a>
+              <a class="dropdown-item" href="/audit/analyst">Analyst Audit Log</a>
+            </div>
+          </div>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle href="#" id="opfuncsDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Op Functions</a>
+            <div class="dropdown-menu" aria-labelledby="opfuncsDropdownMenuLink">
+              <a class="nav-item nav-link" href="/migrate">Migrate</a>
+              <a class="nav-item nav-link" href="/requests">Requests</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    block content

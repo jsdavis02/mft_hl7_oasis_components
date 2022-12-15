@@ -1,0 +1,109 @@
+extends layout
+include flash_message
+block content
+  script(src='/javascripts/endpoint.js')
+  h1= title
+  h1(style="color: purple;") Welcome to Endpoint View
+  +flash_message
+  form.w-50.form-group(name="search", method="post", action="/endpoints/search")
+      div.input-group-sm
+          span Endpoint Search 
+          input(name="search", id="search", type="text")
+          input(name="submit", value="Go", type="submit")
+  h3 Queue List and Current State (polled every minute)
+  table.table.table-striped
+    thead
+      tr
+        th Queue-
+        th Prefetch Count
+        th Consumer Count
+        th Pending Msg Count
+        th Pending Size
+        th Persistent Msg Count
+        th Persistent Size
+    tbody
+      each ql in qdata
+        tr
+          td #{ql.queue_name}
+          td #{ql.prefetch_count}
+          td #{ql.consumers}
+          td #{ql.pending}
+          td #{ql.pending_size}
+          td #{ql.persistent}
+          td #{ql.persistent_size}
+  h4
+    a.mx-1.my-1.btn.btn-success.rounded(href='/endpoints/add') Add New
+    a.mx-1.my-1.btn.btn-success.rounded(href='/routes/add?', id='add_route') Add Route
+  table.table.table-striped
+    thead
+      tr
+        th Select
+        th Actions
+        th ID
+        th Active?
+          select.form-control-sm(name="active_filter", id="active_filter", onchange="window.location.href=this.value")   
+            option(value=`/endpoints?${appendfilters['active']}`, selected=(wparms['active'] === undefined)) All
+            option(value=`/endpoints?active=true&${appendfilters['active']}`, selected=(wparms['active'] === 'true')) True
+            option(value=`/endpoints?active=false&${appendfilters['active']}`, selected=(wparms['active'] === 'false')) False
+        th Run Status
+        th Type
+          select.form-control-sm(name="type_filter", id="type_filter", onchange="window.location.href=this.value")
+            option(value="/endpoints", selected=(wparms['type'] === undefined)) All
+            each endpoint_type in endpoint_types
+              option(value=`/endpoints?type=${endpoint_type}&${appendfilters['type']}`, selected=(wparms['type'] === endpoint_type)) #{endpoint_type}
+        th BW Process Identifier
+        th Endpoint Name
+        th Direction
+          select.form-control-sm(name="direction_filter", id="direction_filter", onchange="window.location.href=this.value")
+            option(value=`/endpoints?${appendfilters['direction']}`, selected=(wparms['direction'] === undefined)) All
+            option(value=`/endpoints?direction=producer&${appendfilters['direction']}`, selected=(wparms['direction'] === 'producer')) producer
+            option(value=`/endpoints?direction=consumer&${appendfilters['direction']}`, selected=(wparms['direction'] === 'consumer')) consumer
+        th Description
+    tbody
+      each endpoint in endpoints
+        - let dclr = 'color: purple;';
+        - let sclr = 'color: black;';
+        - if(endpoint.direction === 'consumer'){dclr = 'color: teal;';}
+        //- if(endpoint.run_status.status === 'Stopped'){sclr = 'color: red;';}
+        //- if(endpoint.run_status.status === 'Running'){sclr = 'color: green;';}
+        tr
+          td
+            input.form-check-inline(e_dir=`${endpoint.direction}`, e_id=`${endpoint.id}`, name=`e_${endpoint.direction}_${endpoint.id}`,type="checkbox")
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/endpoints/view?id=${endpoint.id}`) View 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/endpoints/edit?id=${endpoint.id}`) Edit 
+            a.mx-1.my-1.btn.btn-copy.rounded(href=`/endpoints/duplicate?id=${endpoint.id}`) Duplicate 
+            a.mx-1.my-1.btn.btn-danger.rounded.delete(href=`/endpoints/del?id=${endpoint.id}`) Delete
+          td #{endpoint.id}
+          td.small #{endpoint.active}
+          td.small
+            //p.font-weight-bold(style=sclr)  #{endpoint.run_status.status}
+            //if(endpoint.run_status.status === 'Stopped')
+              a.btn-info.p-1.rounded(style='color: white', href=`/endpoints/app_restart?id=${endpoint.id}`) Start
+            //if(endpoint.direction === 'producer' && endpoint.run_status.status === 'Running')
+              a.btn-success.p-1.rounded(style='color: white', href=`/endpoints/app_restart?id=${endpoint.id}`) Restart
+          td #{endpoint.type}
+          td #{endpoint.bw_process_ident}
+          td #{endpoint.name}
+          td.font-weight-bold(style=dclr) #{endpoint.direction}
+          td.small #{endpoint.description}
+          
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete End Point!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          h4 This will delete the endpoint, all it's properties, associated routes and all those properties, are you sure?
+        </div>
+        <div class="modal-footer">
+          <button id="no-del" type="button" class="btn btn-secondary" data-dismiss="modal">NO!</button>
+          <button id="yes-del" type="button" class="btn btn-primary">Absolutely!</button>
+        </div>
+      </div>
+    </div>
+  </div>            

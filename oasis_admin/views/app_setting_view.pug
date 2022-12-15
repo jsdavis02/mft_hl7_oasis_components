@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  h2 App Setting View - 
+    a(href=`/app_settings/edit?id=${app_setting.id}`) Edit
+  ul
+    li ID: #{app_setting.id}
+    li Name: #{app_setting.name}
+    li Value: #{app_setting.value}
+    li Environment: #{app_setting.env}
+  

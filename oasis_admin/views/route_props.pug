@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Route Property List
+  a(href='/route_props/add') Add New Route Property
+  table
+    tr
+    th ID
+    th Route ID
+    th Name
+    th Value
+    th Environment
+    th Actions
+    
+      each route_prop in route_props
+
+        tr
+        td #{route_prop.id}
+        td #{route_prop.Route.id}
+        td #{route_prop.name}
+        td #{route_prop.value}
+        td #{route_prop.env}
+        td
+            a(href=`/route_props/view?id=${route_prop.id}`) View 
+            a(href=`/route_props/edit?id=${route_prop.id}`) Edit
+            

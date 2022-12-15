@@ -1,0 +1,26 @@
+extends layout
+include flash_message
+block content
+  h1= title
+  h1(style="color: purple;") App Settings View
+  h4
+    a.btn.btn-success.rounded(href='/app_settings/add') Add New App Setting
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th Name
+        th Value
+        th Environment
+          each app_setting in app_settings
+            tr
+              td
+                a.mx-1.my-1.btn.btn-info.rounded(href=`/app_settings/view?id=${app_setting.id}`) View 
+                a.mx-1.my-1.btn.btn-edit.rounded(href=`/app_settings/edit?id=${app_setting.id}`) Edit
+                a.mx-1.my-1.btn.btn-copy.rounded(href=`/app_settings/copy?id=${app_setting.id}`) Copy
+                a.mx-1.my-1.btn.btn-danger.rounded.delete(href=`/app_settings/del?id=${app_setting.id}`) Delete
+              td #{app_setting.id}
+              td #{app_setting.name}
+              td #{app_setting.value}
+              td #{app_setting.env}

@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  script(src='/javascripts/migrate.js')
+  h1= title
+  p Welcome to Migrate Wizard
+    form.w-50(name="migrate_export", method="post", action="/migrate/migrate_export", enctype='multipart/form-data')
+      div.input-group-sm
+        span.col-form-label-sm Migrate Action
+        select.form-control(name="action",id="action")
+          option Import
+          option Export
+          
+      div(id="div_import_file").input-group-sm.mt-3.mb-3
+        span.col-form-label-sm.mr-3 Import File
+        input(type="file", name="import_file", id="import_file")
+      div(id="div_primary_export_item").input-group-sm
+        span.col-form-label-sm Primary Export Item
+        select.form-control(name="primary_export_item",id="primary_export_item")
+          option Endpoint
+          option Route
+      div(id="div_endpoint_type").input-group-sm
+        span.col-form-label-sm EndPoint Type Filter
+        select.form-control(name="endpoint_type",id="endpoint_type")
+          option All
+          each endpoint_type in endpoint_types
+            option #{endpoint_type}
+      div(id="div_route_type").input-group-sm
+        span.col-form-label-sm Route Type Filter
+        select.form-control(name="route_type",id="route_type")
+          option All
+          each route_type in route_types
+            option #{route_type}
+      div(id="div_active").input-group-sm
+        span.col-form-label-sm Active Filter
+        select.form-control(name="active",id="active")
+          option All
+          option True
+          option False
+      div.input-group-lg.mt-3
+        input.form-control.btn-success(name="submit",type="submit",value="Next")

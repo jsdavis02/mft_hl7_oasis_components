@@ -1,0 +1,53 @@
+extends layout
+
+block content
+
+  h1= title
+  p Route Edit
+    form.w-50(name="route_edit", method="post")
+      input.form-control(name="id",id="id",type="hidden",value=`${route.id}`)
+      div.input-group-sm
+        span.col-form-label-sm Is Route Active
+        input.form-check-inline(name="active",type="checkbox",checked=(route.active))
+      div.input-group-sm
+        span.col-form-label-sm Type
+        select.form-control(name="type",id="type")
+          option(value='HL7', selected=('HL7' === route.type)) HL7
+          option(value='MFT', selected=('MFT' === route.type)) MFT
+      div.input-group-sm
+        span.col-form-label-sm Route Name (General name) 
+        input.form-control(name="name",id="name",type="text",value=(route.name || ""))
+      div.input-group-sm
+        span.col-form-label-sm Description 
+        input.form-control(name="description",id="description",type="text",value=(route.description || ""))
+      div.input-group-sm
+        span.col-form-label-sm Producer 
+        select.form-control(name="producer_id",id="producer_id")
+          each endpoint in endpoints
+            option(value=endpoint.id, selected=(endpoint.id == route.Producer.id)) #{endpoint.bw_process_ident} : #{endpoint.name}
+      div.input-group-sm
+        span.col-form-label-sm Consumer 
+        select.form-control(name="consumer_id",id="consumer_id")
+          each endpoint in endpoints
+            option(value=endpoint.id, selected=(endpoint.id == route.Consumer.id)) #{endpoint.bw_process_ident} : #{endpoint.name}
+      div.input-group-sm
+        span.col-form-label-sm Producer Trigger Event 
+        select.form-control(name="producer_messagetypetriggerevent",id="producer_messagetypetriggerevent")
+          each triggerevent in triggerevents
+            option(value=triggerevent, selected=(triggerevent == route.producer_messagetypemessagecode+'.'+route.producer_messagetypetriggerevent)) #{triggerevent}
+      div.input-group-sm
+        span.col-form-label-sm Consumer Trigger Event 
+        select.form-control(name="consumer_messagetypetriggerevent",id="consumer_messagetypetriggerevent")
+          each triggerevent in triggerevents
+            option(value=triggerevent, selected=(triggerevent == route.consumer_messagetypemessagecode+'.'+route.consumer_messagetypetriggerevent)) #{triggerevent}
+      div.input-group-sm
+        span.col-form-label-sm Does Route have Translation
+        input.form-check-inline(name="hasTranslation",type="checkbox",checked=(route.hasTranslation))
+      div.input-group-sm
+        span.col-form-label-sm Does Route have Criteria
+        input.form-check-inline(name="hasCriteria",type="checkbox",checked=(route.hasCriteria))
+      div.input-group-sm
+        span.col-form-label-sm Does Route have message splitting
+        input.form-check-inline(name="hasSplit",type="checkbox",checked=(route.hasSplit))
+      div.input-group-sm
+        input.form-control.btn.btn-success(name="submit",type="submit")

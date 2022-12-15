@@ -1,0 +1,22 @@
+Slow as shit on a cold shingle - fixed for now
+
+Major function: export/import routes/endpoints that bundles
+
+Route properties, same as Endpoint, necessary? if I wanted to change properties - like env, I rather do it in intellij where I can highlight a bunch of rows one shot and commit
+
+Add endpoint/route are missing dropdowns for stuff we need to config - do we still need the HL7 checkbox stuff on the route stuff?
+
+Add endpoint property - clicking on endpoint "properties" link and then add property -- makes you choose the endpoint you just came from -- and again, no dropdown for property names and no help verbiage
+
+Views need massive look and feel make over - nothing stands out visually to me
+
+Admin dashboard missing w/ endpoint, route, audit counts
+
+Can we duplicate endpoints? Can we code up the duplicate route we didn't before?
+
+Endpoint properties view seems unnecessary, rather drill into this stuff to be sure I know what I would be changing
+
+Reorder endpoint change/add properties to match old UI
+
+
+

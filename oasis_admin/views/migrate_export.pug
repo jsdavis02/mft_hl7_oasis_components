@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1= title
+  p Select Main Items to Export
+    form.w-50(name="migrate_export_2", method="post" action="/migrate/migrate_export_2")
+      input.form-control(name="action",id="action",type="hidden",value=`${action}`)
+      input.form-control(name="main_item_type",id="main_item_type",type="hidden",value=`${main_item_type}`)
+      table.table.table-striped
+        thead
+          tr
+            th Export?
+            th Item ID
+            th Item Name
+            - if (main_item_type === 'Endpoint')
+                th BW Process Identifier
+                th Direction
+            th Active?
+        tbody
+          each main_item in main_items
+            tr
+              td
+                input.form-control(name="mainitem_" + main_item.id, type="checkbox")
+              td #{main_item.id}
+              td #{main_item.name}
+              - if (main_item_type === 'Endpoint')
+                td #{main_item.bw_process_ident}
+                td #{main_item.direction}
+              td #{main_item.active}
+      input.form-control.btn.btn-success(name="submit",type="submit",value="Next")

@@ -1,0 +1,53 @@
+extends layout
+
+block content
+
+  h1= title
+  p Welcome to Add Route View
+    form.w-50(name="route_add", method="post")
+      div.input-group-lg
+        span.col-form-label-lg Is Route Active
+        input.form-check-inline(name="active",type="checkbox")
+      div.input-group-sm
+        span.col-form-label-sm Type
+        select.form-control(name="type",id="type")
+          //option HL7
+          option MFT
+      div.input-group-sm
+        span.col-form-label-sm Route Name (General name) 
+        input.form-control(name="name",id="name",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Description 
+        input.form-control(name="description",id="description",type="text")
+      div.input-group-lg
+        span.col-form-label-lg Producer 
+        select.form-control(name="producer_id",id="producer_id")
+          each endpoint in endpoints
+            option(value=endpoint.id, selected=(producer_id === endpoint.id)) #{endpoint.name}
+      div.input-group-lg
+        span.col-form-label-lg Consumer 
+        select.form-control(name="consumer_id",id="consumer_id")
+          each endpoint in endpoints
+            option(value=endpoint.id, selected=(consumer_id === endpoint.id)) #{endpoint.name}
+      div.input-group-sm
+        span.col-form-label-sm Producer Trigger Event 
+        select.form-control(name="producer_messagetypetriggerevent",id="producer_messagetypetriggerevent")
+          each triggerevent in triggerevents
+            option(value=triggerevent) #{triggerevent}
+      div.input-group-sm
+        span.col-form-label-sm Consumer Trigger Event 
+        select.form-control(name="consumer_messagetypetriggerevent",id="consumer_messagetypetriggerevent")
+          each triggerevent in triggerevents
+            option(value=triggerevent) #{triggerevent}
+      //div.input-group-lg
+      //  span.col-form-label-lg Does Route have Translation
+      //  input.form-check-inline(name="hasTranslation",type="checkbox")
+      //div.input-group-lg
+      //  span.col-form-label-lg Does Route have Criteria
+      //  input.form-check-inline(name="hasCriteria",type="checkbox")
+      //div.input-group-lg
+      //  span.col-form-label-lg Does Route have message splitting
+      //  input.form-check-inline(name="hasSplit",type="checkbox")
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")
+      

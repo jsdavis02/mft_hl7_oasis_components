@@ -1,0 +1,84 @@
+{% extends 'OASIS/analyst_template.html' %}
+
+{% block content %}
+{% load static %}
+{% load templatehelpers %}
+                    <script src="{% static 'js/analyst_audit_list_view.js' %}"></script>
+                    <h1 class="mt-4">Your End Points</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">End Points</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                The End Points list below is all the Producer (Apps, Vendors, Departments providing data) and Consumer (Apps, Vendors, Departments consuming data) 
+                                End Points that you have been associated to in OASIS as an Analyst or Data/App Owner.
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <nav>
+                                    <span class="current">
+                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                    </span>
+                                    <ul class="pagination pagination-sm">
+                                        {% if page_obj.has_previous %}
+                                            <li class="page-item"><a class="page-link" href="{% relative_url '1' 'page' request.GET.urlencode %}">&laquo; first</a></li>
+                                            <li class="page-item"><a class="page-link" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a></li>
+                                        {% endif %}
+                                        
+                                        {% if page_obj.has_next %}
+                                            <li class="page-item"><a class="page-link" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a></li>
+                                            <li class="page-item"><a class="page-link" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a></li>
+                                    
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                                
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="audTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Active</th>
+                                                <th>Type</th>
+                                                <th>Identifier</th>
+                                                <th>Direction</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Doc Link</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Active</th>
+                                                <th>Type</th>
+                                                <th>Identifier</th>
+                                                <th>Direction</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Doc Link</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% for data in page_obj %}
+                                                <tr>
+                                                    <td><a class="mx-1 my-1 btn btn-outline-info rounded" href="{% url 'analyst-endpoint-detail-view' data.id %}">{{data.id}}</a></td>
+                                                    <td>{{data.active}}</td>
+                                                    <td>{{data.type}}</td>
+                                                    <td>{{data.bw_process_ident}}</td>
+                                                    <td>{{data.direction}}</td>
+                                                    <td>{{data.name}}</td>
+                                                    <td>{{data.description}}</td>
+                                                    <td>{{data.doclink}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+{% endblock content %}

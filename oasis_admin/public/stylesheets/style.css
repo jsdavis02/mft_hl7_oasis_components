@@ -1,0 +1,84 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+table, th, td {
+  border: 1px solid black;
+  text-align: left;
+}
+
+
+.btn-edit {
+  color: #fff;
+  background-color: #fd7e14;
+  border-color: #fd7e14;
+}
+
+.btn-edit:hover {
+  color: #fff;
+  background-color: darkorange;
+  border-color: darkorange;
+}
+
+.btn-edit:focus, .btn-edit.focus {
+  box-shadow: 0 0 0 0.2rem rgba(55, 55, 55, 0.5);
+}
+
+.btn-edit.disabled, .btn-edit:disabled {
+  color: #fff;
+  background-color: #fd7e14;
+  border-color: #fd7e14;
+}
+
+.btn-edit:not(:disabled):not(.disabled):active, .btn-edit:not(:disabled):not(.disabled).active,
+.show > .btn-edit.dropdown-toggle {
+  color: #fff;
+  background-color: darkorange;
+  border-color: darkorange;
+}
+
+.btn-edit:not(:disabled):not(.disabled):active:focus, .btn-edit:not(:disabled):not(.disabled).active:focus,
+.show > .btn-edit.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(55, 55, 55, 0.5);
+}
+
+
+.btn-copy {
+  color: #fff;
+  background-color: #f04e1f;
+  border-color: #f04e1f;
+}
+
+.btn-copy:hover {
+  color: #fff;
+  background-color: #cb380e;
+  border-color: #cb380e;
+}
+
+.btn-copy:focus, .btn-copy.focus {
+  box-shadow: 0 0 0 0.2rem rgba(55, 55, 55, 0.5);
+}
+
+.btn-copy.disabled, .btn-copy:disabled {
+  color: #fff;
+  background-color: #f04e1f;
+  border-color: #f04e1f;
+}
+
+.btn-copy:not(:disabled):not(.disabled):active, .btn-copy:not(:disabled):not(.disabled).active,
+.show > .btn-copy.dropdown-toggle {
+  color: #fff;
+  background-color: #cb380e;
+  border-color: #cb380e;
+}
+
+.btn-copy:not(:disabled):not(.disabled):active:focus, .btn-copy:not(:disabled):not(.disabled).active:focus,
+.show > .btn-copy.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(55, 55, 55, 0.5);
+}
+

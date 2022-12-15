@@ -1,0 +1,54 @@
+extends layout
+
+block content
+
+  h1= title
+  p Welcome to Add Endpoint View
+    form.w-50(name="endpoint_add", method="post")
+      div.input-group-sm
+        span.col-form-label-sm Is End Point Active
+        input.form-check-inline(name="active",type="checkbox")
+      div.input-group-sm
+        span.col-form-label-sm Type
+        select.form-control(name="type", id="type")
+          each type in types
+            option(value=type) #{type}
+      div.input-group-sm
+        span.col-form-label-sm BW Process Identifier (Value in Deployed BW Receiver or Sender App)
+        input.form-control(name="bw_process_ident",id="bw_process_ident",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Endpoint Name (General name) 
+        input.form-control(name="name",id="name",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Receiving Application Value (MSH-5) Consumers Only
+        input.form-control(name="receiving_app",id="receiving_app",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Receiving Facility Value (MSH-6) Consumers Only
+        input.form-control(name="receiving_facility",id="receiving_facility",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Direction
+        select.form-control(name="direction",id="direction")
+          option consumer
+          option producer
+      div.input-group-sm
+        span.col-form-label-sm Alert Level
+        select.form-control(name="alert_level",id="alert_level")
+          option(value=1) High
+          option(value=2) Medium
+          option(value=3) Low
+          option(value=4) Very Low
+          option(value=100) None
+      div.input-group-sm
+        span.col-form-label-sm Organization 
+        input.form-control(name="organization",id="organization",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Description 
+        input.form-control(name="description",id="description",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Document Link 
+        input.form-control(name="doclink",id="doclink",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Endpoint Software if known 
+        input.form-control(name="software",id="software",type="text")
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

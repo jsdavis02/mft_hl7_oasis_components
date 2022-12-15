@@ -1,0 +1,188 @@
+{% extends 'OASIS/analyst_template.html' %}
+
+{% block content %}
+{% load static %}
+{% load templatehelpers %}
+                        <script src="{% static 'js/analyst_endpoint_detail_view.js' %}"></script>
+                        <h1 class="mt-4">New Integration Request</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'analyst-endpoint-list-view' %}">Your Endpoints</a></li>
+                            <li class="breadcrumb-item active">End Point Detail</li>
+                        </ol>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <h4>General Information</h4>
+                                    <div class="list-group-item">
+                                        <div class="form-group">
+                                            {{ form.description.label_tag}}
+                                            {{ form.description }}
+                                            {{ form.description.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.contact_name.label_tag}}
+                                            {{ form.contact_name }}
+                                            {{ form.contact_name.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.contact_email.label_tag}}
+                                            {{ form.contact_email }}
+                                            {{ form.contact_email.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.contact_phone.label_tag}}
+                                            {{ form.contact_phone }}
+                                            {{ form.contact_phone.help_text }}
+                                        </div>
+                                    </div>
+                                    <h4>Data Producer Information</h4>
+                                    <div class="list-group-item">
+                                        <div class="form-group">
+                                            {{ form.producer_description.label_tag}}
+                                            {{ form.producer_description }}
+                                            {{ form.producer_description.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_type.label_tag}}
+                                            {{ form.producer_type }}
+                                            {{ form.producer_type.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_host.label_tag}}
+                                            {{ form.producer_host }}
+                                            {{ form.producer_host.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_port.label_tag}}
+                                            {{ form.producer_port }}
+                                            {{ form.producer_port.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_path.label_tag}}
+                                            {{ form.producer_path }}
+                                            {{ form.producer_path.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_file_scheme.label_tag}}
+                                            {{ form.producer_file_scheme }}
+                                            {{ form.producer_file_scheme.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_username.label_tag}}
+                                            {{ form.producer_username }}
+                                            {{ form.producer_username.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_password.label_tag}}
+                                            {{ form.producer_password }}
+                                            {{ form.producer_password.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.schedule.label_tag}}
+                                            {{ form.schedule }}
+                                            {{ form.schedule.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.producer_delete_source.label_tag}}
+                                            {{ form.producer_delete_source }}
+                                            {{ form.producer_delete_source.help_text }}
+                                        </div>
+                                    </div>
+                                    <h4>Data Consumer Information</h4>
+                                    <div class="list-group-item">
+                                        <div class="form-group">
+                                            {{ form.consumer_description.label_tag}}
+                                            {{ form.consumer_description }}
+                                            {{ form.consumer_description.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_type.label_tag}}
+                                            {{ form.consumer_type }}
+                                            {{ form.consumer_type.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_host.label_tag}}
+                                            {{ form.consumer_host }}
+                                            {{ form.consumer_host.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_port.label_tag}}
+                                            {{ form.consumer_port }}
+                                            {{ form.consumer_port.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_path.label_tag}}
+                                            {{ form.consumer_path }}
+                                            {{ form.consumer_path.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_file_scheme.label_tag}}
+                                            {{ form.consumer_file_scheme }}
+                                            {{ form.consumer_file_scheme.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_username.label_tag}}
+                                            {{ form.consumer_username }}
+                                            {{ form.consumer_username.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.consumer_password.label_tag}}
+                                            {{ form.consumer_password }}
+                                            {{ form.consumer_password.help_text }}
+                                        </div>
+                                    </div>
+                                    <h4>Data Routing Information</h4>
+                                    <div class="list-group-item">
+                                        <div class="form-group">
+                                            {{ form.data_transfer_req.label_tag}}
+                                            {{ form.data_transfer_req }}
+                                            {{ form.data_transfer_req.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.data_manipulation_req.label_tag}}
+                                            {{ form.data_manipulation_req }}
+                                            {{ form.data_manipulation_req.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.audit_persist.label_tag}}
+                                            {{ form.audit_persist }}
+                                            {{ form.audit_persist.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.alert_level.label_tag}}
+                                            {{ form.alert_level }}
+                                            {{ form.alert_level.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.error_email.label_tag}}
+                                            {{ form.error_email }}
+                                            {{ form.error_email.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.confirm_email.label_tag}}
+                                            {{ form.confirm_email }}
+                                            {{ form.confirm_email.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.no_files_email.label_tag}}
+                                            {{ form.no_files_email }}
+                                            {{ form.no_files_email.help_text }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.document_link.label_tag}}
+                                            {{ form.document_link }}
+                                            {{ form.document_link.help_text }}
+                                        </div>
+                                    </div>
+                                    <input type="submit" value="Submit">
+                                </form>
+                                
+                            </div>
+                        </div>
+
+                        
+                        
+{% endblock content %}

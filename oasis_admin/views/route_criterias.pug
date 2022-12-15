@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Route Criteria List
+  a(href='/route_criterias/add') Add New Route Criteria
+  table
+    tr
+    th ID
+    th Route ID
+    th HL7 Field
+    th HL7 Value
+    th Comparison Operator
+    th Criteria Group Key
+    th Criteria Group Logical Operator (and / or)
+        
+      each route_criteria in route_criterias
+
+        tr
+        td #{route_criteria.id}
+        td #{route_criteria.Route.id}
+        td #{route_criteria.field}
+        td #{route_criteria.value}
+        td #{route_criteria.operator}
+        td #{route_criteria.group_key}
+        td #{route_criteria.group_operator}
+                    

@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1= title
+  h4.alert-info.rounded.p-1.w-50 Welcome to Oasis Admin for "#{process.env.NODE_ENV}" Environment
+  div.container.border.float-left
+    div.row.border
+      div.col-md.bg-light
+        h4(style="color: purple;") Endpoint Counts
+        p Total Endpoints: #{e_count}
+        p Total Active: #{ae_count}
+        p HL7 Type: #{he_count}
+        p MFT FS Type: #{fse_count}
+        p MFT SFTP Client Type: #{sftpce_count}
+        p MFT SMB Type: #{smbce_count}
+      div.col-md.bg-white
+        h4(style="color: orange;") Route Counts
+        p Total Routes: #{r_count}
+        p Total Active: #{ar_count}
+        p HL7 Type: #{hr_count}
+        p MFT Type: #{mr_count}
+      div.col-md.bg-light
+        h4.text-danger Audit Counts
+        h5 Total Audit Records
+        p #{audit_count_total}
+        h5 Total Received HL7
+        p This Week: #{hl7_week_received}
+        h5 Total Received MFT-FS
+        p This Week: #{fs_week_received}
+        h5 Total Received MFT-SFTP-Client
+        p This Week: #{sftpce_week_received}
+        p Past Day: #{sftpce_day_received}
+      

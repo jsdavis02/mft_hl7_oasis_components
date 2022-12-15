@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1= title
+  h2 End Point Property View - 
+    a(href=`/endpoint_props/edit?id=${endpoint_prop.id}`) Edit
+  ul
+    li ID: #{endpoint_prop.id}
+    li End Point ID: #{endpoint_prop.Endpoint.id}
+    ul
+        li Active: #{endpoint_prop.Endpoint.active}
+        li BW Process Identifier: #{endpoint_prop.Endpoint.bw_process_ident}
+        li End Point Name (MSH Value): #{endpoint_prop.Endpoint.endpoint_name}
+        li Direction: #{endpoint_prop.Endpoint.direction}
+        li Alert Level: #{endpoint_prop.Endpoint.alert_level}
+        li Organization: #{endpoint_prop.Endpoint.organization}
+        li Software: #{endpoint_prop.Endpoint.software}
+        li Document Link: #{endpoint_prop.Endpoint.doclink}
+        li Description: #{endpoint_prop.Endpoint.description}
+    li Name: #{endpoint_prop.name}
+    li Value: #{endpoint_prop.value}
+    li Environment: #{endpoint_prop.env}
+  

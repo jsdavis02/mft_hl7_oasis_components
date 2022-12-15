@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+  h1= title
+  p Welcome to MFT Schedule View
+  a(href=`/mft_schedules/edit?id=${mft_schedule.id}`) Edit
+  ul
+    li ID: #{mft_schedule.id}
+    li Active?: #{mft_schedule.active}
+    li Endpoint: #{mft_schedule.Endpoint.bw_process_ident}
+    li Name: #{mft_schedule.name}
+    li Frequency Type: #{mft_schedule.freq_type}
+    li Frequency Interval: #{mft_schedule.freq_interval}
+    li Sub Day Frequency Type: #{mft_schedule.sub_day_freq_type}
+    li Sub Day Frequency Interval: #{mft_schedule.sub_day_freq_interval}
+    li Sub Day Stop Schedule?: #{mft_schedule.sub_day_stop_schedule}
+    li Sub Day Start Time: #{mft_schedule.sub_day_start_time}
+    li Sub Day End Time: #{mft_schedule.sub_day_end_time}
+    li Specific Date: #{mft_schedule.spec_date}
+    li Specific Time: #{mft_schedule.spec_time}
+    li Last Run: #{mft_schedule.last_run}
+    li Last Time Files Found: #{mft_schedule.last_files_found}
+
+  

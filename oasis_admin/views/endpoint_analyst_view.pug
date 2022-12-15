@@ -1,0 +1,116 @@
+extends analyst_layout
+
+block content
+  h1= title
+  h2 End Point View
+  
+  h4 Configuration
+  div.list-group-item.bg-white
+    ul
+      li ID: #{endpoint.id}
+      li Active: #{endpoint.active}
+      li Type: #{endpoint.type}
+      li BW Process Identifier: #{endpoint.bw_process_ident}
+      li End Point General Name: #{endpoint.name}
+      li Receiving Application (MSH 5 - Consumers only): #{endpoint.receiving_app}
+      li Receiving Facility (MSH 6 - Consumers only): #{endpoint.receiving_facility}
+      li Direction: #{endpoint.direction}
+      li Alert Level: #{endpoint.alert_level}
+      li Organization: #{endpoint.organization}
+      li Software: #{endpoint.software}
+      li Document Link: #{endpoint.doclink}
+      li Description: #{endpoint.description}
+  h4 Associated Properties - 
+      
+  table.table.table-striped
+    thead
+      tr
+        th ID
+        th End Point ID
+        th Name
+        th Value
+        th Environment
+    tbody
+      each endpoint_prop in endpoint_props
+        tr
+          
+          td #{endpoint_prop.id}
+          td #{endpoint_prop.endpoint_id}
+          td #{endpoint_prop.name}
+          td #{endpoint_prop.value}
+          td #{endpoint_prop.env}
+            
+  h4 Associated Routes - 
+    
+
+  table.table.table-striped
+    thead
+      tr
+        th Route ID
+        th Active?
+        th Name
+        th Description
+        th Producer ID
+        th Consumer ID
+        th Producer Message Type
+        th Producer Message Event
+        th Consumer Message Type
+        th Consumer Message Event
+    tbody
+      each route in routes
+        tr
+          td #{route.id}
+          td #{route.active}
+          td #{route.name}
+          td #{route.description}
+          td #{route.producer_id}
+          td #{route.consumer_id}
+          td #{route.producer_messagetypemessagecode}
+          td #{route.producer_messagetypetriggerevent}
+          td #{route.consumer_messagetypemessagecode}
+          td #{route.consumer_messagetypetriggerevent}
+  
+          
+  h4 Associated Schedules - 
+    
+  table.table.table-striped
+    thead
+      tr
+        th ID
+        th Active?
+        th Name
+        th Freq Type
+        th Freq Int
+        th Sub Freq Int
+        th Pause Start
+        th Pause End
+        th Sub Day Freq Type
+        th Sub Day Freq Int
+        th Sub Day Stop
+        th Sub Day Start Time
+        th Sub Day End Time
+        th Specific Date
+        th Specific Time
+        th Last Run
+        th Last Time Files Found
+    tbody
+      each mft_schedule in mft_schedules
+        tr
+          td #{mft_schedule.id}
+          td #{mft_schedule.active}
+          td #{mft_schedule.name}
+          td #{mft_schedule.freq_type}
+          td #{mft_schedule.freq_interval}
+          td #{mft_schedule.sub_freq_interval}
+          td #{(mft_schedule.pause_start) ? dateformat(mft_schedule.pause_start, "shortTime") : ""}
+          td #{(mft_schedule.pause_end) ? dateformat(mft_schedule.pause_end, "shortTime") : ""}
+          td #{mft_schedule.sub_day_freq_type}
+          td #{mft_schedule.sub_day_freq_interval}
+          td #{mft_schedule.sub_day_stop_schedule}
+          td #{(mft_schedule.sub_day_start_time) ? dateformat(mft_schedule.sub_day_start_time, "shortTime") : ""}
+          td #{(mft_schedule.sub_day_end_time) ? dateformat(mft_schedule.sub_day_end_time, "shortTime") : ""}
+          td #{(mft_schedule.spec_date) ? moment(mft_schedule.spec_date, "YYYY-MM-DD").format('MM/DD/YYYY') : ""}
+          td #{(mft_schedule.spec_time) ? dateformat(mft_schedule.spec_time, "shortTime") : ""}
+          td #{(mft_schedule.last_run) ? dateformat(mft_schedule.last_run, "ddd, mmm dS, yyyy, h:MM:ss TT") : ""}
+          td #{(mft_schedule.last_files_found) ? dateformat(mft_schedule.last_files_found, "ddd, mmm dS, yyyy, h:MM:ss TT") : ""}
+          

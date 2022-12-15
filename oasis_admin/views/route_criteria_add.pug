@@ -1,0 +1,46 @@
+extends layout
+
+block content
+
+  h1= title
+  p Add Route Criteria
+    form.w-50(name="route_criteria_add", method="post")
+      input.form-control(name="route_id",id="route_id",type="hidden",value=`${route.id}`)
+      div.input-group-sm
+        span.col-form-label-sm Associated Route Name: #{route.name}
+      div.input-group-sm  
+        span.col-form-label-sm Associated Route ID: #{route.id}
+      div.input-group-sm
+        span.col-form-label-sm Field
+        input.form-control(name="field",id="field",type="text")
+      p Field notation must be S[SR]-F[RF].C where S is the segment, SR is the repeating segment, F is the field, RF is repeating field, C is the component.
+      div.input-group-sm
+        span.col-form-label-sm Field Value
+        input.form-control(name="value",id="value",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Condition Operator
+        select.form-control(name="operator",id="operator")
+          option(value='eq') equals
+          option(value='eqi') equals ignore case
+          option(value='ne') not equals
+          option(value='nei') not equals ignore case
+          option(value='lt') less than
+          option(value='gt') greater than
+          option(value='le') less than or equals
+          option(value='gte') greater than or equals
+      div.input-group-sm
+        span.col-form-label-sm Route Behavior
+        select.form-control(name="method", id="method")
+          option(value='do_route') Do Route
+          option(value='no_route') Do NOT Route
+      div.input-group-sm
+        span.col-form-label-sm Criteria Group Key
+        input.form-control(name="group_key",id="group_key",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Criteria Group Operator
+        select.form-control(name="group_operator", id="group_operator")
+          option(value='') None
+          option(value='OR') OR
+          option(value='AND') AND
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

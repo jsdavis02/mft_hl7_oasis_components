@@ -1,0 +1,38 @@
+extends layout
+
+block content
+
+  h1= title
+  p Welcome to Add Multiple HL7 Routes View
+  p This will only do 1 to 1 message types, so if you select ADT A01 it means from producer to consumer it will stay an ADT A01.
+  p Use the <a href="/routes/add">Single Add Route form</a> if you need the input and output message type to change during routing.
+    form.w-50(name="route_add_many", method="post")
+      div.input-group-lg
+        span.col-form-label-lg Add Default Route Properties and Values
+        input.form-check-inline(name="addProps",type="checkbox")
+      div.input-group-lg
+        span.col-form-label-lg Producer 
+        select.form-control(name="producer_id",id="producer_id")
+          each endpoint in endpoints
+            option(value=endpoint.id) #{endpoint.name}
+      div.input-group-lg
+        span.col-form-label-lg Consumer 
+        select.form-control(name="consumer_id",id="consumer_id")
+          each endpoint in endpoints
+            option(value=endpoint.id) #{endpoint.name}
+      div.input-group-lg
+        span.col-form-label-lg Producer & Consumer Messages
+        select.form-control(name="messagetypes",id="messagetypes",multiple=true)
+          each triggerevent in triggerevents
+            option(value=triggerevent) #{triggerevent}
+      div.input-group-lg
+        span.col-form-label-lg Does Route have Translation
+        input.form-check-inline(name="hasTranslation",type="checkbox")
+      div.input-group-lg
+        span.col-form-label-lg Does Route have Criteria
+        input.form-check-inline(name="hasCriteria",type="checkbox")
+      div.input-group-lg
+        span.col-form-label-lg Does Route have message splitting
+        input.form-check-inline(name="hasSplit",type="checkbox")
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

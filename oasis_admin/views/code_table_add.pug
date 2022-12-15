@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  script(src='/javascripts/code_table.js')
+  h1= title
+  p Add Code Table Entry
+    form.w-50(name="code_table_add", method="post")
+        div.input-group-sm
+          span.col-form-label-sm Input
+          input.form-control(name="input", id="input", type="text")
+        div.input-group-sm
+            span.col-form-label-sm Output
+            input.form-control(name="output", id="output", type="text")
+        div.input-group-sm
+          span.col-form-label-sm Lookup
+          select.form-control(name="lookup_key", id="lookup_key")
+            each code_table_key in code_table_keys
+              option(value=code_table_key.lookup_key) #{code_table_key.lookup_key}
+            option Add New
+        div(id="div_new_key").input-group-sm
+          span.col-form-label-sm New Lookup Key
+          input.form-control(name="new_key",id="new_key", type="text")
+        div.input-group-sm
+          span.col-form-label-sm Environment
+          select.form-control(name="env",id="env")
+            option DEV
+            option TST
+            option PPRD
+            option PRD
+        div.input-group-lg
+          input.form-control.btn.btn-success(name="submit", type="submit")

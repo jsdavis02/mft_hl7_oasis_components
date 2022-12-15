@@ -1,0 +1,135 @@
+extends layout
+include flash_message
+block content
+  link(rel='stylesheet', href='/stylesheets/multi-select.css')
+  script(src='/javascripts/jquery.multi-select.js')
+  script(src='/javascripts/int_request.js')
+  h1= title
+  h2 New Integration Request
+  +flash_message
+  form.w-50.form-group(name="mft_request", method="post")
+    h4 General Information
+    div.list-group-item.bg-light.mb-lg-auto
+      div.input-group-sm
+        span.col-form-label-sm Description 
+        textarea.form-control(name="description", id="description")
+      div.input-group-sm
+        span.col-form-label-sm Contact Name (Analyst or Business Owner) 
+        input.form-control(name="contact_name", id="contact_name", type="text")
+      div.input-group-sm
+        span.col-form-label-sm Contact Email (Analyst or Department Group Email) 
+        input.form-control(name="contact_email", id="contact_email", type="email", value=contact_email)
+      div.input-group-sm
+        span.col-form-label-sm Contact Phone (Analyst or Department Manager Phone) 
+        input.form-control(name="contact_phone", id="contact_phone", type="tel", pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}")
+    h4 Data Producer Information
+    div.list-group-item.bg-light.mb-lg-auto
+      div.input-group-sm
+        span.col-form-label-sm Producer Description (Details for source data such as: filename, filesystem or sftp server, must provide hostname or IP, port and user credentials) 
+        textarea.form-control(name="producer_description", id="producer_description")
+      div(id="div_producer_type").input-group-lg
+        span.col-form-label-sm Producer Type
+        select.form-control(name="producer_type", id="producer_type")
+          option Select One
+          each request_type in request_types
+            option(value=`${request_type.type}`) #{request_type.label}
+      div(id="div_producer_host").input-group-sm
+        span.col-form-label-sm Producer Server Host Name or IP 
+        input.form-control(name="producer_server", id="producer_server", type="text")
+      div(id="div_producer_port").input-group-sm
+        span.col-form-label-sm Producer Port 
+        input.form-control(name="producer_port", id="producer_port", type="text")
+      div(id="div_producer_file_path").input-group-sm
+        span.col-form-label-sm Producer File Path 
+        input.form-control(name="producer_path", id="producer_path", type="text")
+      div(id="div_producer_file_scheme").input-group-sm
+        span.col-form-label-sm Producer File Scheme (mydata_yyyymmdd.txt, sample.dat, import*.txt, etc) 
+        input.form-control(name="producer_file_scheme", id="producer_file_scheme", type="text")
+      div(id="div_producer_username").input-group-sm
+        span.col-form-label-sm Producer Username 
+        input.form-control(name="producer_user", id="producer_user", type="text")
+      div(id="div_producer_pass").input-group-sm
+        span.col-form-label-sm Producer Password 
+        input.form-control(name="producer_pass", id="producer_pass", type="text")
+      div(id="div_producer_schedule").input-group-sm
+        span.col-form-label-sm Schedule Requirements (When or how often we get data)
+        textarea.form-control(name="schedule", id="schedule")
+      div(id="div_producer_msg_types").input-group-sm
+        span.col-form-label-sm Producer HL7 Message Types 
+        select.form-control(name="producer_msg_types", id="producer_msg_types", multiple="multiple")
+          each triggerevent in triggerevents
+            option(value=triggerevent) #{triggerevent}
+      div(id="div_producer_delete_source").input-group-sm
+        span.col-form-label-sm Delete Source File after Pickup
+        select.form-control(name="delete_fs_source", id="delete_fs_source")
+          option YES
+          option NO
+    h4 Data Consumer Information
+      div.list-group-item.bg-light.mb-lg-auto
+        div.input-group-sm
+          span.col-form-label-sm Consumer Description (Details for consumer for the data such as: filesystem or sftp server, must provide hostname or IP, port and user credentials) 
+          textarea.form-control(name="consumer_description", id="consumer_description")
+        div(id="div_consumer_type").input-group-lg
+          span.col-form-label-sm Consumer Type
+          select.form-control(name="consumer_type", id="consumer_type")
+            option Select One
+            each request_type in request_types
+              option(value=`${request_type.type}`) #{request_type.label}
+        div(id="div_consumer_host").input-group-sm
+          span.col-form-label-sm Consumer Server Host Name or IP 
+          input.form-control(name="consumer_server", id="consumer_server", type="text")
+        div(id="div_consumer_port").input-group-sm
+          span.col-form-label-sm Consumer Port 
+          input.form-control(name="consumer_port", id="consumer_port", type="text")
+        div(id="div_consumer_file_path").input-group-sm
+          span.col-form-label-sm Consumer File Path 
+          input.form-control(name="consumer_path", id="consumer_path", type="text")
+        div(id="div_consumer_file_scheme").input-group-sm
+          span.col-form-label-sm Consumer File Scheme (mydata_yyyymmdd.txt, sample.dat, import*.txt, etc) 
+          input.form-control(name="consumer_file_scheme", id="consumer_file_scheme", type="text")
+        div(id="div_consumer_username").input-group-sm
+          span.col-form-label-sm Consumer Username 
+          input.form-control(name="consumer_user", id="consumer_user", type="text")
+        div(id="div_consumer_pass").input-group-sm
+          span.col-form-label-sm Consumer Password 
+          input.form-control(name="consumer_pass", id="consumer_pass", type="text")
+        div(id="div_consumer_msg_types").input-group-sm
+          span.col-form-label-sm Consumer HL7 Message Types 
+          select.form-control(name="consumer_msg_types", id="consumer_msg_types", multiple="multiple")
+            each triggerevent in triggerevents
+              option(value=triggerevent) #{triggerevent}
+    h4 Data Routing Information
+      div.list-group-item.bg-light.mb-lg-auto
+        div(id="div_data_transfer_req").input-group-sm
+          span.col-form-label-sm Data Transfer Requirements (Details for file operations during transfer, such as timestamping, renaming, encryption, signing etc) 
+          textarea.form-control(name="data_transfer_req", id="data_transfer_req")
+        div(id="div_data_manipulation_req").input-group-sm
+          span.col-form-label-sm Data Manipulation Requirements (Details for data changes during file transfer, such as deleting or concatenating data or file contents during transfer) 
+          textarea.form-control(name="data_manipulation_req", id="data_manipulation_req")
+        div(id="div_audit_persist").input-group-sm
+          span.col-form-label-sm Archive Data Payload
+          select.form-control(name="audit_persist", id="audit_persist")
+            option YES
+            option NO
+        div(id="div_alert_level").input-group-sm
+          span.col-form-label-sm Alert Level
+          select.form-control(name="alert_level", id="alert_level")
+            option(value=1) High
+            option(value=2) Medium
+            option(value=3) Low
+            option(value=4) Very Low
+            option(value=100) None
+        div(id="div_error_email").input-group-sm
+          span.col-form-label-sm Error Email (Comma Delimit multiple - If required, email to confirm that files were transferred successfully) 
+          input.form-control(name="error_email", id="error_email", type="text")
+        div(id="div_confirm_email").input-group-sm
+          span.col-form-label-sm File Transfer Confirmation Email (Comma Delimit multiple - If required, email to confirm that files were transferred successfully) 
+          input.form-control(name="confirmation_email", id="confirmation_email", type="text")
+        div(id="div_nofiles_email").input-group-sm
+          span.col-form-label-sm No Files Found Notification Email (Comma Delimit multiple - If required, email to notify when expected files are not found) 
+          input.form-control(name="nofiles_email", id="nofiles_email", type="text")
+        div.input-group-sm
+          span.col-form-label-sm Vendor Information (Name and Contact Information) 
+          input.form-control(name="doclink", id="doclink", type="text")
+    div.input-group-lg
+      input.form-control.btn.btn-success(name="submit", type="submit")

@@ -1,0 +1,36 @@
+extends layout
+include flash_message
+block content
+  script(src='/javascripts/user_delete.js')
+  h1= title
+  h1 Welcome to User View
+  +flash_message
+  h4
+    a.btn.btn-success.rounded(href='/users/add') Add New User
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th Username
+        th Email
+        th Role
+        th Endpoints
+    tbody
+      each user in users
+        tr
+          td
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/users/edit?id=${user.id}`) Edit 
+            a.mx-1.my-1.btn.btn-warning.rounded.invite(href=`/users/email_invite?id=${user.id}`) Email Invite 
+            a.mx-1.my-1.btn.btn-danger.rounded.delete(href=`/users/delete?id=${user.id}`) Delete
+          td #{user.id}
+          td #{user.username}
+          td #{user.email}
+          td #{user.role}
+          td
+            - if(user.endpoints.length > 0)
+              select.form-control-sm(name="user_endpoints", id="user_endpoints_"+user.id, onchange="window.location.href=this.value")
+                option(value="") Associated EndPoints
+                each endpoint in user.endpoints
+                  - if(endpoint)
+                      option(value=`/endpoints/view?id=${endpoint.id}`) #{endpoint.bw_process_ident}

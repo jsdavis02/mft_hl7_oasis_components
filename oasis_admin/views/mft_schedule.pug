@@ -1,0 +1,74 @@
+extends layout
+include flash_message
+block content
+  script(src='/javascripts/mft_sched_del.js')
+  h1= title
+  h3.alert-warning MFT Scheduler Status: #{sched_status} - 
+    a.btn.btn-danger.rounded(href='/mft_schedules/toggle_scheduler') Toggle Scheduler Status
+  h1(style="color: purple;") Welcome to MFT All Schedule View
+  +flash_message
+  
+  h4
+    a.btn.btn-success.rounded(href='/mft_schedules/add') Add New
+  
+  table.table.table-striped.table-sm
+    thead
+      tr
+        th Actions
+        th ID
+        th Active?
+          p
+            select.form-control-sm(name="active_filter", id="active_filter", onchange="window.location.href=this.value")
+              option(value="/mft_schedules", selected=(wparms['active'] === undefined)) All
+              option(value="/mft_schedules?active=true", selected=(wparms['active'] === 'true')) True
+              option(value="/mft_schedules?active=false", selected=(wparms['active'] === 'false')) False
+        th Endpoint BW Ident
+        th Name
+        th Freq Type?
+          p
+            select.form-control-sm(name="frequency_type", id="frequency_filter", onchange="window.location.href=this.value")
+              option(value="/mft_schedules", selected=(wparms['freq_type'] === undefined)) All
+              each frequency_type in frequency_types
+                if(frequency_type !== 'Multi Day Of Week' && frequency_type !== 'Multi Times a Day')
+                  option(value="/mft_schedules?freq_type="+frequency_type, selected=(wparms['freq_type'] === frequency_type)) #{frequency_type}
+        th Freq Int
+        th Sub Freq Int
+        th Pause Start
+        th Pause End
+        th Sub Day Freq Type
+        th Sub Day Freq Interval
+        th Sub Day Stop Schedule
+        th Sub Day Start Time
+        th Sub Day End Time
+        th Specific Date
+        th Specific Time
+        th Last Run
+        th Last Files Found
+    tbody
+      each mft_schedule in mft_schedules
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/mft_schedules/view?id=${mft_schedule.id}`) View 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/mft_schedules/edit?id=${mft_schedule.id}`) Edit 
+            a.mx-1.my-1.btn.btn-danger.rounded.mft_sched_delete(href=`/mft_schedules/remove?id=${mft_schedule.id}`) Delete
+          td #{mft_schedule.id}
+          td.small #{mft_schedule.active}
+          td.small 
+            a(href=`/endpoints/view?id=${mft_schedule.Endpoint.id}`) #{mft_schedule.Endpoint.bw_process_ident}
+          td.small #{mft_schedule.name}
+          td #{mft_schedule.freq_type}
+          td #{mft_schedule.freq_interval}
+          td #{mft_schedule.sub_freq_interval}
+          td #{(mft_schedule.pause_start) ? dateformat(mft_schedule.pause_start, "shortTime") : ""}
+          td #{(mft_schedule.pause_end) ? dateformat(mft_schedule.pause_end, "shortTime") : ""}
+          td #{mft_schedule.sub_day_freq_type}
+          td #{mft_schedule.sub_day_freq_interval}
+          td #{mft_schedule.sub_day_stop_schedule}
+          td #{(mft_schedule.sub_day_start_time) ? dateformat(mft_schedule.sub_day_start_time, "shortTime") : ""}
+          td #{(mft_schedule.sub_day_end_time) ? dateformat(mft_schedule.sub_day_end_time, "shortTime") : ""}
+          td #{(mft_schedule.spec_date) ? moment(mft_schedule.spec_date, "YYYY-MM-DD").format('MM/DD/YYYY') : ""}
+          td #{(mft_schedule.spec_time) ? dateformat(mft_schedule.spec_time, "shortTime") : ""}
+          td #{(mft_schedule.last_run) ? dateformat(mft_schedule.last_run, "ddd, mmm dS, yyyy, h:MM:ss TT") : ""}
+          td #{(mft_schedule.last_files_found) ? dateformat(mft_schedule.last_files_found, "ddd, mmm dS, yyyy, h:MM:ss TT") : ""}
+        
+

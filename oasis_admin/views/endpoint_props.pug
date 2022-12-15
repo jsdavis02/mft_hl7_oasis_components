@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Endpoint Property List
+  a(href='/endpoint_props/add') Add New Endpoint Property
+  table
+    tr
+    th ID
+    th Endpoint ID
+    th Name
+    th Value
+    th Environment
+    th Actions
+    
+      each endpoint_prop in endpoint_props
+
+        tr
+        td #{endpoint_prop.id}
+        td #{endpoint_prop.Endpoint.endpoint_name}
+        td #{endpoint_prop.name}
+        td #{endpoint_prop.value}
+        td #{endpoint_prop.env}
+        td
+            a(href=`/endpoint_props/view?id=${endpoint_prop.id}`) View 
+            a(href=`/endpoint_props/edit?id=${endpoint_prop.id}`) Edit
+            

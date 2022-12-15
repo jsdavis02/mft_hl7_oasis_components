@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  script(src='/javascripts/route_delete.js')
+  h1= title
+  h1(style="color: orange;") Welcome to Route View
+  form.w-50.form-group(name="search", method="post", action="/routes/search")
+    div.input-group-sm
+      span Route Search 
+      input(name="search", id="search", type="text")
+      input(name="submit", value="Go", type="submit")
+  h4
+    a.btn.btn-success.rounded(href='/routes/add') Add New Route
+  h4
+    a.btn.btn-success.rounded(href='/routes/add_many') Add New Multiple Routes
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th Active?
+          select.form-control-sm(name="active_filter", id="active_filter", onchange="window.location.href=this.value")
+            option(value=`/routes?${appendfilters['active']}`, selected=(wparms['active'] === undefined)) All
+            option(value=`/routes?active=true&${appendfilters['active']}`, selected=(wparms['active'] === 'true')) True
+            option(value=`/routes?active=false&${appendfilters['active']}`, selected=(wparms['active'] === 'false')) False
+        th Type
+          select.form-control-sm(name="type_filter", id="type_filter", onchange="window.location.href=this.value")
+            option(value=`/routes&${appendfilters['type']}`, selected=(wparms['type'] === undefined)) All
+            option(value=`/routes?type=HL7&${appendfilters['type']}`,  selected=(wparms['type'] === 'HL7')) HL7
+            option(value=`/routes?type=MFT&${appendfilters['type']}`, selected=(wparms['type'] === 'MFT')) MFT
+        th Name
+        th Description
+        th Producer
+          select.form-control-sm(name="producer_filter", id="producer_filter", onchange="window.location.href=this.value")
+            option(value="/routes", selected=(wparms['producer_id'] === undefined)) All
+            each producer in producers
+              option(value=`/routes?producer_id=${producer.id}&${appendfilters['producer_id']}`, selected=(wparms['producer_id'] === producer.id)) #{producer.bw_process_ident}
+        th Consumer
+          select.form-control-sm(name="consumer_filter", id="consumer_filter", onchange="window.location.href=this.value")
+            option(value="/routes", selected=(wparms['consumer_id'] === undefined)) All
+            each consumer in consumers
+              option(value=`/routes?consumer_id=${consumer.id}&${appendfilters['consumer_id']}`, selected=(wparms['consumer_id'] === consumer.id)) #{consumer.bw_process_ident}
+    tbody  
+      each route in routes
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/routes/view?id=${route.id}`) View 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/routes/edit?id=${route.id}`) Edit 
+            a.mx-1.my-1.btn.btn-danger.rounded.route_delete(href=`/routes/del?id=${route.id}`) Delete
+          td #{route.id}
+          td #{route.active}
+          td #{route.type}
+          td #{route.name}
+          td #{route.description}
+          td 
+              a(href=`/endpoints/view?id=${route.Producer.id}`) #{route.Producer.bw_process_ident}
+          td 
+              a(href=`/endpoints/view?id=${route.Consumer.id}`) #{route.Consumer.bw_process_ident}
+
+

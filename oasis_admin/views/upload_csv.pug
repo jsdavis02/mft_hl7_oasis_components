@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  p Upload CSV File
+  form(method='post', enctype='multipart/form-data')
+    input(type='file', name='csv_file')
+    input(type='submit', name='upload_file', value='Upload')

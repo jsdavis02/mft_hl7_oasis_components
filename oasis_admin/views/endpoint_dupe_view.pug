@@ -1,0 +1,102 @@
+extends layout
+
+block content
+  //script(src='/javascripts/endpoint_view.js')
+  h1= title
+  h2 Duplicate Endpoint
+  form.w-50(name="endpoint", method="post")
+    
+    div.input-group-sm
+      span.col-form-label-sm Is End Point Active
+      input.form-check-inline(name="active",type="checkbox",checked=(endpoint.active))
+    div.input-group-sm
+      span.col-form-label-sm Type
+        select.form-control(name="type", id="type")
+          each type in types
+            option(value=type, selected=(type === endpoint.type)) #{type}
+    div.input-group-sm
+      span.col-form-label-sm BW Process Identifier (Value in Deployed BW Receiver or Sender App)
+      input.form-control(name="bw_process_ident", id="bw_process_ident",type="text", value=(endpoint.bw_process_ident+"-DUPE" || ""))
+    div.input-group-sm
+      span.col-form-label-sm Endpoint Name (General name) 
+      input.form-control(name="name", id="name", type="text", value=(endpoint.name+" Duplicate" || ""))
+    div.input-group-sm
+      span.col-form-label-sm Receiving Application Value (MSH-5) Consumers Only
+      input.form-control(name="receiving_app", id="receiving_app",type="text",value=(endpoint.receiving_app || ""))
+    div.input-group-sm
+      span.col-form-label-sm Receiving Facility Value (MSH-6) Consumers Only
+      input.form-control(name="receiving_facility",id="receiving_facility",type="text",value=(endpoint.receiving_facility || ""))
+    div.input-group-sm
+      span.col-form-label-sm Direction
+      select.form-control(name="direction",id="direction")
+        option(selected=('consumer' === endpoint.direction)) consumer
+        option(selected=('producer' === endpoint.direction)) producer
+        option(selected=('splitter' === endpoint.direction)) splitter
+    div.input-group-sm
+      span.col-form-label-sm Alert Level
+      select.form-control(name="alert_level",id="alert_level")
+        option(value=1, selected=(1 === endpoint.alert_level)) High
+        option(value=2, selected=(2 === endpoint.alert_level)) Medium
+        option(value=3, selected=(3 === endpoint.alert_level)) Low
+        option(value=4, selected=(4 === endpoint.alert_level)) Very Low
+        option(value=100, selected=(100 === endpoint.alert_level)) None
+    div.input-group-sm
+      span.col-form-label-sm Organization 
+      input.form-control(name="organization",id="organization",type="text",value=(endpoint.organization || ""))
+    div.input-group-sm
+      span.col-form-label-sm Description 
+      input.form-control(name="description",id="description",type="text",value=(endpoint.description || ""))
+    div.input-group-sm
+      span.col-form-label-sm Document Link 
+      input.form-control(name="doclink",id="doclink",type="text",value=(endpoint.doclink || ""))
+    div.input-group-sm
+      span.col-form-label-sm Endpoint Software if known 
+      input.form-control(name="software",id="software",type="text",value=(endpoint.software || ""))
+    div.input-group-lg
+      h3 Associated Properties - 
+        a(href=`/endpoint_props/add?endpoint_id=${endpoint.id}`) Add New Property
+      table
+        tr
+        th Copy?
+        th End Point ID
+        th Name
+        th Value
+        th Environment
+          each endpoint_prop in endpoint_props
+            tr
+            td
+              input.form-control(name="prop_" + endpoint_prop.id, type="checkbox", checked="checked")
+            td #{endpoint_prop.endpoint_id}
+            td #{endpoint_prop.name}
+            td #{endpoint_prop.value}
+            td #{endpoint_prop.env}
+    div.input-group-lg
+      h3 Associated Schedules - 
+        a(href=`/mft_schedules/add?endpoint_id=${endpoint.id}`) Add
+      table
+        tr
+        th Copy?
+        th Active?
+        th Name
+        th Frequency Type
+        th Frequency Interval
+        th Specific Date
+        th Specific Time
+          each mft_schedule in mft_schedules
+            //table id='mft_sched'
+            tr
+            td
+              input.form-control(name="schedule_" + mft_schedule.id, type="checkbox", checked="checked")
+            td #{mft_schedule.active}
+            td #{mft_schedule.name}
+            td #{mft_schedule.freq_type}
+            td #{mft_schedule.freq_interval}
+            td #{(mft_schedule.spec_date) ? dateformat(mft_schedule.spec_date, "longDate") : ""}
+            td #{(mft_schedule.spec_time) ? dateformat(mft_schedule.spec_time, "shortTime") : ""}
+    div.input-group-lg
+        input.form-control(name="submit",type="submit")
+  
+            
+  
+  
+        

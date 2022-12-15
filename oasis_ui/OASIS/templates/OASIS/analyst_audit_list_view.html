@@ -1,0 +1,139 @@
+{% extends 'OASIS/analyst_template.html' %}
+
+{% block content %}
+{% load static %}
+{% load templatehelpers %}
+                    <script src="{% static 'js/analyst_audit_list_view.js' %}"></script>
+                    <h1 class="mt-4">Audit Log</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Audit Log</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                The Audit Log is the real time view of activity processing in OASIS. Analyst can view log entries associated with End Points of which they are Data Owners for.
+                                If you need the Integration Team to remove an association or add an End Point you feel is missing from <a href="#">Your End Points</a> feel free to email that request.
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <form method="get">
+                                    {% csrf_token %}
+                                    {{ form }}
+                                    <input type="submit" value="Submit">
+                                </form>
+                                <div class="btn-group"><a class="btn btn-a" href="{% relative_url '-1' 'days' params %}"><img src="{% static 'assets/img/refresh-ccw.svg' %}"> Reset Filters</a> </div>
+                                <table class="table table-striped">
+                                    
+                                    <tr>
+                                        <td>
+                                            <nav>
+                                                <span class="current">
+                                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                                </span>
+                                                <ul class="pagination pagination-sm">
+                                                    {% if page_obj.has_previous %}
+                                                    <li class="page-item"><a class="page-link" href="{% relative_url '1' 'page' request.GET.urlencode %}">&laquo; first</a></li>
+                                                    <li class="page-item"><a class="page-link" href="{% relative_url page_obj.previous_page_number 'page' request.GET.urlencode %}">previous</a></li>
+                                                    {% endif %}
+
+                                                    {% if page_obj.has_next %}
+                                                    <li class="page-item"><a class="page-link" href="{% relative_url page_obj.next_page_number 'page' request.GET.urlencode %}">next</a></li>
+                                                    <li class="page-item"><a class="page-link" href="{% relative_url page_obj.paginator.num_pages 'page' request.GET.urlencode %}">last &raquo;</a></li>
+
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="audTable" cellspacing="0" >
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Message Type</th>
+                                                <th>Message Time</th>
+                                                <th>Message GUID</th>
+                                                <th>Process State</th>
+                                                <th>Description</th>
+                                                <th>Producer IDENT</th>
+                                                <th>Consumer IDENT</th>
+                                                <th>Route ID</th>
+                                                <th>Control ID</th>
+                                                <th>MsgRef</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Message Type</th>
+                                                <th>Message Time</th>
+                                                <th>Message GUID</th>
+                                                <th>Process State</th>
+                                                <th>Description</th>
+                                                <th>Producer IDENT</th>
+                                                <th>Consumer IDENT</th>
+                                                <th>Route ID</th>
+                                                <th>Control ID</th>
+                                                <th>MsgRef</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
+                                            {% for data in page_obj %}
+                                                <tr>
+                                                    <td><a class="mx-1 my-1 btn btn-outline-info rounded" href="{% url 'analyst-audit-detail-view' data.id %}">{{data.id}}</a></td>
+                                                    <td>{{data.type}}</td>
+                                                    <td>{{data.proc_time}}</td>
+                                                    <td><a href="{% relative_url data.messageguid 'messageguid' params %}">{{data.messageguid}}</a></td>
+                                                    <td>
+                                                        <p>{{data.processstate}}</p>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <a data-toggle="tooltip" data-placement="right" title="Show Only this Process State" href="{% relative_url data.processstate 'processstate' request.GET.urlencode True 'processstate_hide' %}"><img alt="Show Only" src="{% static 'assets/img/eye.svg' %}"/></a>
+                                                            </div>
+                                                            <div class="col">
+                                                                <a data-toggle="tooltip" data-placement="right" title="Hide this Process State" href="{% relative_url data.processstate 'processstate_hide' request.GET.urlencode False %}"><img alt="Hide" src="{% static 'assets/img/eye-off.svg' %}"/></a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="word-break: break-all">{{data.description}}</td>
+                                                    <td>
+                                                        {% if data.producer_ident %}
+                                                            <a href="{% relative_url data.producer_ident 'producer_ident' params %}">{{data.producer_ident}}</a>
+                                                        {% else %}
+                                                            {{data.producer_ident}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if data.consumer_ident %}
+                                                            <a href="{% relative_url data.consumer_ident 'consumer_ident' params %}">{{data.consumer_ident}}</a>
+                                                        {% else %}
+                                                            {{data.consumer_ident}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if data.route_id %}
+                                                            <a href="{% relative_url data.route_id 'route_id' params %}">{{data.route_id}}</a>
+                                                        {% else %}
+                                                            {{data.route_id}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if data.messagecontrolid %}
+                                                            <a href="{% relative_url data.messagecontrolid 'messagecontrolid' params %}">{{data.messagecontrolid}}</a>
+                                                        {% else %}
+                                                            {{data.messagecontrolid}}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{data.messagereference}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+{% endblock content %}

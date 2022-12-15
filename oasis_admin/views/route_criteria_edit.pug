@@ -1,0 +1,47 @@
+extends layout
+
+block content
+
+  h1= title
+  p Add Route Criteria
+    form.w-50(name="route_criteria_edit", method="post")
+      input.form-control(name="id",id="id",type="hidden",value=`${route_criteria.id}`)
+      input.form-control(name="route_id",id="route_id",type="hidden",value=`${route_criteria.Route.id}`)
+      div.input-group-sm
+        span.col-form-label-sm Associated Route Name: #{route_criteria.Route.name}
+      div.input-group-sm  
+        span.col-form-label-sm Associated Route ID: #{route_criteria.Route.id}
+      div.input-group-sm
+        span.col-form-label-sm Field
+        input.form-control(name="field", id="field", type="text", value=`${route_criteria.field}`)
+      p Field notation must be S[SR]-F[RF].C where S is the segment, SR is the repeating segment, F is the field, RF is repeating field, C is the component.
+      div.input-group-sm
+        span.col-form-label-sm Field Value
+        input.form-control(name="value", id="value", type="text", value=`${route_criteria.value}`)
+      div.input-group-sm
+        span.col-form-label-sm Condition Operator
+        select.form-control(name="operator", id="operator")
+          option(value='eq', selected=('eq' === route_criteria.operator)) equals
+          option(value='eqi', selected=('eqi' === route_criteria.operator)) equals ignore case
+          option(value='ne', selected=('ne' === route_criteria.operator)) not equals
+          option(value='nei', selected=('nei' === route_criteria.operator)) not equals ignore case
+          option(value='lt', selected=('lt' === route_criteria.operator)) less than
+          option(value='gt', selected=('gt' === route_criteria.operator)) greater than
+          option(value='le', selected=('le' === route_criteria.operator)) less than or equals
+          option(value='gte', selected=('gte' === route_criteria.operator)) greater than or equals
+      div.input-group-sm
+        span.col-form-label-sm Route Behavior
+        select.form-control(name="method", id="method")
+          option(value='do_route', selected=('do_route' === route_criteria.method)) Do Route
+          option(value='no_route', selected=('no_route' === route_criteria.method)) Do NOT Route
+      div.input-group-sm
+        span.col-form-label-sm Criteria Group Key
+        input.form-control(name="group_key", id="group_key", type="text", value=`${route_criteria.group_key}`)
+      div.input-group-sm
+        span.col-form-label-sm Criteria Group Operator
+        select.form-control(name="group_operator", id="group_operator")
+          option(value='', selected=('' === route_criteria.group_operator)) None
+          option(value='OR', selected=('OR' === route_criteria.group_operator)) OR
+          option(value='AND', selected=('AND' === route_criteria.group_operator)) AND
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

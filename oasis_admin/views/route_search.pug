@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  //script(src='/javascripts/endpoint_view.js')
+  h1= title
+  h2 Search Again
+  form.w-50.form-group(name="search", method="post", action="/routes/search")
+    div.input-group-sm
+      span Route Search 
+      input(name="search",id="search",type="text")
+      input(name="submit",value="Go",type="submit")
+  h2 Route Search Results
+  - for(let x in routes)
+    div.list-group-item.bg-light
+      span Route
+        p.navbar.w-25
+          a.btn-success.p-1.rounded(href=`/routes/view?id=${routes[x].route.id}`) View 
+          a.btn-success.p-1.rounded(href=`/routes/edit?id=${routes[x].route.id}`) Edit
+      ul
+        li ID: #{routes[x].route.id}
+        li Name: #{routes[x].route.name}
+        li Description: #{routes[x].route.description}
+        li Type: #{routes[x].route.type}
+      - if(routes[x].hasOwnProperty('properties'))
+        div
+          span Properties
+        - for(let p in routes[x].properties)
+          div.list-group-item.bg-white
+            p.navbar
+              a.btn-info.p-1.rounded(href=`/route_props/view?id=${routes[x].properties[p].id}`) View 
+              a.btn-info.p-1.rounded(href=`/route_props/edit?id=${routes[x].properties[p].id}`) Edit 
+              a.btn-info.p-1.rounded(href=`/route_props/del?id=${routes[x].properties[p].id}`) Delete
+            ul
+              li ID: #{routes[x].properties[p].id}
+              li Name: #{routes[x].properties[p].name}
+              li Value: #{routes[x].properties[p].value}
+              li Environment: #{routes[x].properties[p].env}
+          

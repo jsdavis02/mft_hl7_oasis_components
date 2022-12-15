@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  //so the action value here on the form will now just send on to the original controller
+  h1= title
+  p Edit Message Payload
+  ul
+    li ID: #{audit.id}
+    li Message GUID: #{audit.MessageGUID}
+    li Message Control ID: #{audit.MessageControlID}
+    li Message Type: #{audit.type}
+    li Processing Time: #{audit.proc_time}
+    li ProcessState: #{audit.ProcessState}
+    li Producer BW Identifier: #{audit.producer_ident}
+    li Consumer BW Identifier: #{audit.consumer_ident}
+    li Route ID: #{audit.route_id}
+  form.w-50(name="payload_edit", method="post" action=`${action}?id=${audit.id}`)
+    input.form-control(name="id", id="id", type="hidden", value=`${audit.id}`)  
+    div.input-group-lg
+      span.col-form-label-sm Message Payload
+      textarea(name="MessagePayloadEdit", class="w-100 text-nowrap" rows="10" id="payload") #{audit.MessagePayload}
+      //this way our controller can see it's an edit instead of the actual db persisted data, aka might have changed
+    div.input-group-lg
+      input.form-control.btn.btn-success(name="submit", type="submit", value="Send")
+   
+    

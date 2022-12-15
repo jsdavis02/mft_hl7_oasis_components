@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  h2 Add App Setting
+    form.w-50(name="app_setting_add", method="post")
+      div.input-group-sm
+        span.col-form-label-sm End Point Property Name
+        input.form-control(name="name", id="name", type="text")
+      div.input-group-sm
+        span.col-form-label-sm End Point Property Value
+        input.form-control(name="value", id="value", type="text")
+      div.input-group-sm
+        span.col-form-label-sm Environment
+        select.form-control(name="env", id="env")
+          each env in env_list
+            option(value=env) #{env}
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit", type="submit")

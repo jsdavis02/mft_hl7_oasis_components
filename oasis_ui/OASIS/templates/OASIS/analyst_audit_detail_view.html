@@ -1,0 +1,149 @@
+{% extends 'OASIS/analyst_template.html' %}
+
+{% block content %}
+{% load static %}
+{% load templatehelpers %}
+<!--                        <script src="{% static 'js/analyst_endpoint_detail_view.js' %}"></script>-->
+                        <h1 class="mt-4">{{ Endpoint.bw_process_ident }}</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'analyst-audit-list-view' %}">Audit Log</a></li>
+                            <li class="breadcrumb-item active">Audit Entry Detail</li>
+                        </ol>
+                        <h3>Audit Details</h3>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <div class="row">
+                                    <table class="table table-sm table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td class="font-weight-bold">Description:</td>
+                                                <td>{{ Audit.description }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-bold">Audit Data Reference:</td>
+                                                <td>{{ Audit.messagereference }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold">Audit ID:</td>
+                                                    <td>{{ Audit.id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Process State:</td>
+                                                    <td>{{ Audit.processstate }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Message GUID:</td>
+                                                    <td>{{ Audit.messageguid }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Audit Type:</td>
+                                                    <td>{{ Audit.type }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Data Format:</td>
+                                                    <td>{{ Audit.data_format }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold">Received <img src="{% static 'assets/img/clock.svg' %}"/></td>
+                                                    <td>{{ Audit.datetimeofmessage }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Processing Step <img src="{% static 'assets/img/clock.svg' %}"/></td>
+                                                    <td>{{ Audit.proc_time }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Audit Record Create <img src="{% static 'assets/img/clock.svg' %}"/></td>
+                                                    <td>{{ Audit.created_at }}</td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm">
+                                        <table class="table table-sm table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="font-weight-bold">Control ID:</td>
+                                                    <td>{{ Audit.messagecontrolid }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Producer ID:</td>
+                                                    <td>{{ Audit.producer_id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Producer Ident:</td>
+                                                    <td>{{ Audit.producer_ident }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Route ID:</td>
+                                                    <td>{{ Audit.route_id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Consumer ID:</td>
+                                                    <td>{{ Audit.consumer_id }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="font-weight-bold">Consumer Ident:</td>
+                                                    <td>{{ Audit.consumer_ident }}</td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if Properties %}
+                        <h3>Properties</h3>
+                        <table class="table table-striped" id="properties">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                {% for prop in Properties %}
+                                    <tr>
+                                        {% if prop.name == 'original_filename' %}
+                                            <td><a href="{% url 'analyst-audit-download' Audit.id %}"><img src="{% static 'assets/img/download.svg' %}"/></a> </td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}
+                                        <td>{{prop.id}}</td>
+                                        <td>{{prop.name}}</td>
+                                        <td>{{prop.value}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+
+                        
+{% endblock content %}

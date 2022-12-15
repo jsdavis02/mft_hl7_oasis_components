@@ -1,0 +1,220 @@
+extends layout
+include flash_message
+block content
+  link(rel='stylesheet', href='/stylesheets/multi-select.css')
+  script(src='/javascripts/jquery.multi-select.js')
+  script(src='/javascripts/endpoint_prop_delete.js')
+  script(src='/javascripts/mft_sched_del.js')
+  script(src='/javascripts/endpoint_view.js')
+  h1= title
+  h2 End Point View
+  +flash_message
+  div.list-group-item
+    nav.navbar.navbar-light
+      form.form-inline
+        select(onchange="window.location.href=this.value").form-control-sm
+          option Page Sections
+          option(value="/audit?"+endpoint.direction+"_ident="+endpoint.bw_process_ident) Audits
+          option(value="#config_header") Configuration
+          option(value="#properties_header") Properties
+          option(value="#routes_header") Routes
+          option(value="#schedules_header") Schedules
+          option(value="#users_header") Analysts
+      a.btn.btn-edit.rounded(href=`/endpoints/edit?id=${endpoint.id}`) Edit
+      a.btn.btn-copy.rounded(href=`/endpoints/duplicate?id=${endpoint.id}`) Duplicate
+      a.btn.delete.btn-danger.rounded(href=`/endpoints/del?id=${endpoint.id}`) Delete
+      
+  ////if (endpoint.run_status.status.length > 0)
+  //  h4 Deployment Status
+  //  div.navbar.w-25
+  //    //if(endpoint.run_status.status === 'Stopped')
+  //      a.btn-info.p-1.rounded(style='color: white', href=`/endpoints/app_restart?id=${endpoint.id}`) Start
+  //    //if(endpoint.direction === 'producer' && endpoint.run_status.status === 'Running')
+  //      a.btn-success.p-1.rounded(style='color: white', href=`/endpoints/app_restart?id=${endpoint.id}`) Restart
+  //  div.list-group-item.bg-light
+  //    ul
+  //      li EndPoint Application: #{endpoint.run_status.endpoint}
+  //      li Application Version: #{endpoint.run_status.version}
+  //      li BW AppNode: #{endpoint.run_status.appnode}
+  //      li Application Profile: #{endpoint.run_status.profile}
+  //      li Application Status: #{endpoint.run_status.status}
+  //      li Deployment Status: #{endpoint.run_status.deployment_status}
+  //      li Running Total: #{endpoint.run_status.running_total}
+  h4(id="config_header") Configuration
+  div.list-group-item.bg-white.mb-lg-auto
+    ul
+      li ID: #{endpoint.id}
+      li Active: #{endpoint.active}
+      li Type: #{endpoint.type}
+      li BW Process Identifier: #{endpoint.bw_process_ident}
+      li End Point General Name: #{endpoint.name}
+      li Receiving Application (MSH 5 - Consumers only): #{endpoint.receiving_app}
+      li Receiving Facility (MSH 6 - Consumers only): #{endpoint.receiving_facility}
+      li Direction: #{endpoint.direction}
+      li Alert Level: #{endpoint.alert_level}
+      li Organization: #{endpoint.organization}
+      li Software: #{endpoint.software}
+      li Document Link: #{endpoint.doclink}
+      li Description: #{endpoint.description}
+  h4(id="properties_header").my-3 Associated Properties - 
+      a.btn.btn-success.rounded(href=`/endpoint_props/add?endpoint_id=${endpoint.id}`) Add
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th End Point ID
+        th Name
+        th Value
+        th Environment
+    tbody
+      each endpoint_prop in endpoint_props
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/endpoint_props/view?id=${endpoint_prop.id}`) View 
+            - if(endpoint_prop.name.includes('password') || endpoint_prop.name.includes('passphrase'))
+              a.mx-1.my-1.btn.btn-outline-danger.rounded(href=`/endpoint_props/view_decrypt?id=${endpoint_prop.id}`) Decrypt 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/endpoint_props/edit?id=${endpoint_prop.id}`) Edit 
+            a.mx-1.my-1.btn.btn-danger.rounded(href=`/endpoint_props/del?id=${endpoint_prop.id}`).prop_delete Delete
+          td #{endpoint_prop.id}
+          td #{endpoint_prop.endpoint_id}
+          td #{endpoint_prop.name}
+          td #{endpoint_prop.value}
+          td #{endpoint_prop.env}
+            
+  h4(id="routes_header").my-3 Associated Routes - 
+    - let propstring = 'producer_id';
+    - if(endpoint.direction === 'consumer'){ propstring = 'consumer_id';}
+    a.btn.btn-success.rounded(href=`/routes/add?${propstring}=${endpoint.id}`) Add
+
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th Route ID
+        th Active?
+        th Name
+        th Description
+        th Producer ID
+        th Consumer ID
+        th Producer Message Type
+        th Producer Message Event
+        th Consumer Message Type
+        th Consumer Message Event
+    tbody
+      each route in routes
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/routes/view?id=${route.id}`) View 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/routes/edit?id=${route.id}`) Edit 
+            a.mx-1.my-1.btn.btn-danger.rounded(href=`/routes/del?id=${route.id}&endpoint_id=${endpoint.id}`) Delete
+          td #{route.id}
+          td #{route.active}
+          td #{route.name}
+          td #{route.description}
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/endpoints/view?id=${route.producer_id}`) View #{route.producer_id}
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/endpoints/view?id=${route.consumer_id}`) View #{route.consumer_id}
+          td #{route.producer_messagetypemessagecode}
+          td #{route.producer_messagetypetriggerevent}
+          td #{route.consumer_messagetypemessagecode}
+          td #{route.consumer_messagetypetriggerevent}
+
+          
+  h4(id="schedules_header").my-3 Associated Schedules - 
+    a.btn.btn-success.rounded(href=`/mft_schedules/add?endpoint_id=${endpoint.id}`) Add
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th Active?
+        th Name
+        th Freq Type
+        th Freq Int
+        th Sub Freq Int
+        th Pause Start
+        th Pause End
+        th Sub Day Freq Type
+        th Sub Day Freq Int
+        th Sub Day Stop
+        th Sub Day Start Time
+        th Sub Day End Time
+        th Specific Date
+        th Specific Time
+        th Last Run
+        th Last Time Files Found
+    tbody
+      each mft_schedule in mft_schedules
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/mft_schedules/view?id=${mft_schedule.id}`) View 
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/mft_schedules/edit?id=${mft_schedule.id}`) Edit 
+            a.mx-1.my-1.btn.btn-danger.rounded.mft_sched_delete(href=`/mft_schedules/remove?id=${mft_schedule.id}`) Delete
+          td #{mft_schedule.id}
+          td #{mft_schedule.active}
+          td #{mft_schedule.name}
+          td #{mft_schedule.freq_type}
+          td #{mft_schedule.freq_interval}
+          td #{mft_schedule.sub_freq_interval}
+          td #{(mft_schedule.pause_start) ? dateformat(mft_schedule.pause_start, "shortTime") : ""}
+          td #{(mft_schedule.pause_end) ? dateformat(mft_schedule.pause_end, "shortTime") : ""}
+          td #{mft_schedule.sub_day_freq_type}
+          td #{mft_schedule.sub_day_freq_interval}
+          td #{mft_schedule.sub_day_stop_schedule}
+          td #{(mft_schedule.sub_day_start_time) ? dateformat(mft_schedule.sub_day_start_time, "shortTime") : ""}
+          td #{(mft_schedule.sub_day_end_time) ? dateformat(mft_schedule.sub_day_end_time, "shortTime") : ""}
+          td #{(mft_schedule.spec_date) ? moment(mft_schedule.spec_date, "YYYY-MM-DD").format('MM/DD/YYYY') : ""}
+          td #{(mft_schedule.spec_time) ? dateformat(mft_schedule.spec_time, "shortTime") : ""}
+          td #{(mft_schedule.last_run) ? dateformat(mft_schedule.last_run, "ddd, mmm dS, yyyy, h:MM:ss TT") : ""}
+          td #{(mft_schedule.last_files_found) ? dateformat(mft_schedule.last_files_found, "ddd, mmm dS, yyyy, h:MM:ss TT") : ""}
+  
+  h4(id="users_header").my-3 Associated Analysts - 
+    a.btn.btn-success.rounded(href=`/users/add?endpoint_id=${endpoint.id}`) Add New User
+  form.w-50.form-group(name="users_endpoint", method="post", action="/users/add_endpoint")
+    input(name="endpoint_id", id="endpoint_id", type="hidden", value=endpoint.id)
+    div(id="div_users").input-group-sm
+      span.col-form-label-sm Analyst for Endpoint
+      select.form-control(name="analyst[]", id="analysts" multiple="multiple")
+        each analyst in analysts
+          - var s = false;
+          - if(uids.includes(analyst.id)){ s = true; }
+          option(value=`${analyst.id}`, selected=s) #{analyst.email}
+    div.input-group-lg
+      input.form-control.btn.btn-success(name="submit", type="submit", value="Update Users")
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th Username
+        th Email
+    tbody
+      each user in endpoint.users
+        tr
+          td
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/users/edit?id=${user.id}`) Edit
+          td #{user.id}
+          td #{user.username}
+          td #{user.email}
+      
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete End Point!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          h4 This will delete the endpoint, all it's properties, associated routes and all those properties, are you sure?
+        </div>
+        <div class="modal-footer">
+          <button id="no-del" type="button" class="btn btn-secondary" data-dismiss="modal">NO!</button>
+            <button id="yes-del" type="button" class="btn btn-primary">Absolutely!</button>
+        </div>
+      </div>
+    </div>
+  </div>        

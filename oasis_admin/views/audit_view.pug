@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  h1= title
+  h2 Welcome to Admin Audit Detail View
+  
+  h4(id="config_header") Configuration
+  div.list-group-item.bg-white
+      ul
+        li ID: #{audit.id}
+        li Message GUID: #{audit.MessageGUID} 
+          a(href=`/audit?MessageGUID=${audit.MessageGUID}`) Show All Audits for GUID
+        li Message Control ID: #{audit.MessageControlID}
+        li Message Type: #{audit.type}
+        li Processing Time: #{audit.proc_time}
+        li ProcessState: #{audit.ProcessState}
+        li Producer BW Identifier: #{audit.producer_ident}
+        li Consumer BW Identifier: #{audit.consumer_ident}
+        li Route ID: #{audit.route_id}
+  
+  h4(id="properties_header").my-3 Associated Properties
+  table.table.table-striped
+    thead
+      tr
+        th Action
+        th Audit ID
+        th Name
+        th Value
+    tbody
+      each audit_prop in audit_props
+        tr
+          td
+            if (audit_prop.name === 'original_filename')
+                a.mx-1.my-1.btn.btn-info.rounded(href=`/audit/file?fpath=${audit.MessageReference}&audit_prop_id=${audit_prop.id}`) Download
+          td #{audit_prop.audit_id}
+          td #{audit_prop.name}
+          td #{audit_prop.value}
+   
+  h4(id="description_header") Description
+  div.list-group-item.bg-white
+    p #{audit.description}
+  
+  div.input-group-lg.h-100
+    if (audit.data_format === 'hl7')
+      p
+      span.col-form-label-lg Message Payload
+      textarea(class="w-100 text-nowrap" rows="10") #{audit.MessagePayload}
+    

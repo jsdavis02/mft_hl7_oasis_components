@@ -1,0 +1,169 @@
+{% extends 'admin/base.html' %}
+
+{% block content %}
+{% load static %}
+{% load templatehelpers %}
+                        <script src="{% static 'js/analyst_endpoint_detail_view.js' %}"></script>
+                        <h1 class="mt-4">{{ Endpoint.bw_process_ident }}</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'analyst-endpoint-list-view' %}">Imports</a></li>
+                            <li class="breadcrumb-item active">Select Resources</li>
+                        </ol>
+                        <h3>Elements to Import</h3>
+                        <form method="POST" enctype="multipart/form-data" action="admin_import_store/">
+                        {% csrf_token %}
+                        <table class="table table-striped" id="properties">
+                            
+                            <tbody>
+                            {% for endpoint in endpoints %}
+                            {% for k, v in endpoint.items %}
+                                {% if 'endpoint' in k %}
+                                    <tr class="bg-info">
+                                        <td colspan="5"><h2>Endpoint</h2></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Import?</th>
+                                        <th>Identifier</th>
+                                        <th>Type</th>
+                                        <th>Name</th>
+                                        <th>Direction</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" name="endpoint_{{v.i_file_id}}_{{v.id}}" value="{{v.id}}"/></td>
+                                        <td>{{v.bw_process_ident}}</td>
+                                        <td>{{v.type}}</td>
+                                        <td>{{v.name}}</td>
+                                        <td>{{v.direction}}</td>
+                                    </tr>
+                                {%endif%}
+                                {% if 'properties' in k %}
+                                    <tr class="bg-info">
+                                        <td colspan="5"><h2>Endpoint Properties</h2></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Import?</th>
+                                        <th>Old PK</th>
+                                        <th>Name</th>
+                                        <th>Value</th>
+                                        <th>Environment</th>
+                                    </tr>
+                                    {% for p in v %}
+                                        <tr>
+                                            <td><input name="endpointprop_{{p.i_file_id}}_{{p.endpoint_id}}_{{p.pk}}" type="checkbox" value="{{p.pk}}"/></td>
+                                            <td>{{p.pk}}</td>
+                                            <td>{{p.name}}</td>
+                                            <td>{{p.value}}</td>
+                                            <td>{{p.env}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if 'schedules' in k %}
+                                {% if v|length > 0 %}
+                                    <tr class="bg-info">
+                                        <td colspan="5"><h2>Endpoint Schedules</h2></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Import?</th>
+                                        <th>Old PK</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Interval</th>
+                                    </tr>
+                                    {% for s in v %}
+                                        <tr>
+                                            <td><input name="schedule_{{s.i_file_id}}_{{s.endpoint_id}}_{{s.pk}}" type="checkbox" value="{{s.pk}}"/></td>
+                                            <td>{{s.pk}}</td>
+                                            <td>{{s.name}}</td>
+                                            <td>{{s.freq_type}}</td>
+                                            <td>{{s.freq_interval}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endif %}
+                                {% if 'routes' in k %}
+                                    {% if v|length > 0 %}
+                                        {% for rt in v %}
+                                            {% for rtk, rte in rt.items %}
+                                                {% if 'route' in rtk %}
+                                                    <tr class="bg-info">
+                                                        <td colspan="5"><h2>Routes</h2></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Import?</th>
+                                                        <th>Old PK</th>
+                                                        <th>Name</th>
+                                                        <th>Type</th>
+                                                        <th>Producer / Consumer</th>
+                                                    </tr>
+                                        
+                                                    <tr>
+                                                        <td><input name="route_{{rte.i_file_id}}_{{rte.id}}" type="checkbox" value="{{rte.id}}"/></td>
+                                                        <td>{{rte.id}}</td>
+                                                        <td>{{rte.name}}</td>
+                                                        <td>{{rte.type}}</td>
+                                                        <td>
+                                                            <label for="rt_producer_{{rte.id}}">Producer:</label>
+                                                                <select id="rt_producer_{{rte.id}}" name="rt_producer_{{rte.id}}">
+                                                                    <option value="None">None</option>
+                                                                    <optgroup label="Importing Now">
+                                                                        {% for ip in i_producers %}
+                                                                        <option value="i_{{ip.i_file_id}}_{{ ip.pk }}">{{ ip.bw_process_ident }}</option>
+                                                                        {% endfor %}
+                                                                    </optgroup>
+                                                                    <optgroup label="Existing">
+                                                                    {% for epd in producers %}
+                                                                        <option value="e_{{ epd.id }}">{{ epd.bw_process_ident }}</option>
+                                                                    {% endfor %}
+                                                                    </optgroup>
+                                                                </select>
+                                                            <br/>
+                                                            <label for="rt_consumer_{{rte.id}}">Consumer:</label> 
+                                                            <select id="rt_consumer_{{rte.id}}" name="rt_consumer_{{rte.id}}">
+                                                                <option value="None">None</option>
+                                                                <optgroup label="Importing Now">
+                                                                    {% for ic in i_consumers %}
+                                                                    <option value="i_{{ic.i_file_id}}_{{ ic.pk }}">{{ ic.bw_process_ident }}</option>
+                                                                    {% endfor %}
+                                                                </optgroup>
+                                                                <optgroup label="Existing">
+                                                                    {% for ecr in consumers %}
+                                                                    <option value="e_{{ ecr.id }}">{{ ecr.bw_process_ident }}</option>
+                                                                    {% endfor %}
+                                                                </optgroup>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if 'properties' in rtk %}
+                                                    <tr class="bg-info">
+                                                        <td colspan="5"><h2>Route Properties</h2></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Import?</th>
+                                                        <th>Old PK</th>
+                                                        <th>Name</th>
+                                                        <th>Value</th>
+                                                        <th>Environment</th>
+                                                    </tr>
+                                                    {% for p in rte %}
+                                                        <tr>
+                                                            <td><input name="routeprop_{{p.i_file_id}}_{{p.route_id}}_{{p.pk}}" type="checkbox" value="{{p.pk}}"/></td>
+                                                            <td>{{p.pk}}</td>
+                                                            <td>{{p.name}}</td>
+                                                            <td>{{p.value}}</td>
+                                                            <td>{{p.env}}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                            <input type="submit" value="Import" class="btn btn-md btn-secondary">
+                        </form>
+{% endblock content %}

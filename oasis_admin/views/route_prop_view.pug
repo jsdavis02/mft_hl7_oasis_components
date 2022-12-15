@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  h2 Route Property View - 
+    a(href=`/route_props/edit?id=${route_prop.id}`) Edit
+  ul
+    li ID: #{route_prop.id}
+    li Route ID: #{route_prop.Route.id} - 
+        a(href=`/routes/view?id=${route_prop.Route.id}`) View
+    li Name: #{route_prop.name}
+    li Value: #{route_prop.value}
+    li Environment: #{route_prop.env}
+  

@@ -1,0 +1,4 @@
+GET http://GLBPS0ESB40I04:8100/appconfig
+Accept: application/json
+Authorization: Basic YWRtaW46b2FzaXM=
+###

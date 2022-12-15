@@ -1,0 +1,94 @@
+extends layout
+include flash_message
+block content
+  script(src='/javascripts/audit_confirm.js')
+  h1= title
+  h1 Welcome to Admin Audit View
+  +flash_message
+  h4 Audit Search
+  form.w-50.form-group(name="search", method="get", action="/audit/")
+    div.input-group-sm
+      span.col-form-label-sm Start (assumes 24 hours) 
+      input.form-control-sm(name="start", id="start", type="datetime-local", value=`${start_value}`)
+    div.input-group-sm
+      span.col-form-label-sm End (assumes 24 hours) 
+      input.form-control-sm(name="end", id="end", type="datetime-local", value=`${end_value}`)
+    div.input-group-sm
+      span.col-form-label-sm Search Term 
+      input.form-control-sm(name="search", id="search", type="text", value=`${search_value}`)
+    input.form-control-sm(name="submit", value="Search", type="submit")
+  div.navbar.w-25
+    a.btn.btn-outline-info.rounded(href=`/audit?p=${p-1}${pq_parms}`) Previous Page 
+    a.btn.btn-outline-info.rounded(href=`/audit?p=${p+1}${pq_parms}`) Next Page
+  table.table.table-striped.table-sm
+    thead
+      tr
+        th Actions
+        th Message Type
+          select.form-control-sm(name="type_filter", id="type_filter", onchange="window.location.href=this.value")
+            option(value=`/audit?${appendfilters['type']}`, selected=(wparms['type'] === undefined)) All
+            each type in types
+              option(value=`/audit?type=${type.type}&${appendfilters['type']}`, selected=(wparms['type'] === type.type)) #{type.type}
+        th Message Time
+        th Message GUID
+        th Process State
+            select.form-control-sm(name="process_state_filter", id="process_state_filter", onchange="window.location.href=this.value")
+              option(value=`/audit?${appendfilters['ProcessState']}`, selected=(wparms['ProcessState'] === undefined)) All
+              each process_state in process_states
+                option(value=`/audit?ProcessState=${process_state.ProcessState}&${appendfilters['ProcessState']}`, selected=(wparms['ProcessState'] === process_state.ProcessState)) #{process_state.ProcessState}
+        th(style="max-width: 500px; word-wrap: break-word;") Description
+        th Producer BW Identifier
+            select.form-control-sm(name="producer_filter", id="producer_filter", onchange="window.location.href=this.value")
+              option(value=`/audit?${appendfilters['producer_ident']}`, selected=(wparms['producer_ident'] === undefined)) All
+              each producer in producers
+                option(value=`/audit?producer_ident=${producer.producer_ident}&${appendfilters['producer_ident']}`, selected=(wparms['producer_ident'] === producer.producer_ident)) #{producer.producer_ident}
+        th Consumer BW Identifier
+            select.form-control-sm(name="consumer_filter", id="consumer_filter", onchange="window.location.href=this.value")
+              option(value=`/audit?${appendfilters['consumer_ident']}`, selected=(wparms['consumer_ident'] === undefined)) All
+              each consumer in consumers
+                option(value=`/audit?consumer_ident=${consumer.consumer_ident}&${appendfilters['consumer_ident']}`, selected=(wparms['consumer_ident'] === consumer.consumer_ident)) #{consumer.consumer_ident}
+        th Route ID
+        th Message Type
+          select.form-control-sm(name="message_type_filter", id="message_type_filter", onchange="window.location.href=this.value")
+            option(value=`/audit?&${appendfilters['MessageTypeMessageCode']}`, selected=(wparms['MessageTypeMessageCode'] === undefined)) All
+            each message_type in message_types
+              option(value=`/audit?MessageTypeMessageCode=${message_type.MessageTypeMessageCode}&${appendfilters['MessageTypeMessageCode']}`, selected=(wparms['MessageTypeMessageCode'] === message_type.MessageTypeMessageCode)) #{message_type.MessageTypeMessageCode}
+        th Message Trigger
+          select.form-control-sm(name="message_trigger_filter", id="message_trigger_filter", onchange="window.location.href=this.value")
+            option(value=`/audit?&${appendfilters['MessageTypeTriggerEvent']}`, selected=(wparms['MessageTypeTriggerEvent'] === undefined)) All
+            each message_trigger in message_triggers
+              option(value=`/audit?MessageTypeTriggerEvent=${message_trigger.MessageTypeTriggerEvent}&${appendfilters['MessageTypeTriggerEvent']}`, selected=(wparms['MessageTypeTriggerEvent'] === message_trigger.MessageTypeTriggerEvent)) #{message_trigger.MessageTypeTriggerEvent}
+        th Control ID
+    tbody
+      each audit in audits
+        tr
+          td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/audit/view?id=${audit.id}`) View 
+            if (audit.ProcessState === 'send-begin')
+              a.mx-1.my-1.btn.btn-edit.rounded(href=`/audit/resend?id=${audit.id}`, pk=`${audit.id}`).resend_confirm Resend
+            if (audit.ProcessState === 'mft-send-start')
+              a.mx-1.my-1.btn.btn-edit.rounded(href=`/audit/resend?id=${audit.id}`, pk=`${audit.id}`).mft_resend Resend
+            if (audit.ProcessState === 'routing-begin')
+              a.mx-1.my-1.btn.btn-edit.rounded(href=`/audit/reprocess?id=${audit.id}`, pk=`${audit.id}`).reproc_confirm ReProcess
+    
+          td
+            if audit.type === 'notice'
+              button.btn.btn-success #{audit.type}
+            else
+              button.btn.btn-danger #{audit.type}
+          td #{audit.proc_time.toLocaleString()}
+          td
+            a(href=`/audit/?MessageGUID=${audit.MessageGUID}`) #{audit.MessageGUID}
+          td.small #{audit.ProcessState}
+          td(style="max-width: 500px; word-wrap: break-word;").small #{audit.description}
+          
+          td 
+            a(href=`/endpoints/?bw_process_ident=${audit.producer_ident}`) #{audit.producer_ident}
+          td
+            a(href=`/endpoints/?bw_process_ident=${audit.consumer_ident}`) #{audit.consumer_ident}
+          td 
+            a(href=`/routes/view?id=${audit.route_id}`) #{audit.route_id} 
+          td #{audit.MessageTypeMessageCode}
+          td #{audit.MessageTypeTriggerEvent}
+          td #{audit.MessageControlID}
+          

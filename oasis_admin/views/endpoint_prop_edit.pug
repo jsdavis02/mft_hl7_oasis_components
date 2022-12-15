@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  - let dclr = 'color: purple;';
+  - if(endpoint_prop.Endpoint.direction === 'consumer'){dclr = 'color: teal;';}
+  h1= title
+  h2(style=dclr) Edit End Point Property
+    h5 Endpoint Name: #{endpoint_prop.Endpoint.name}
+    h5 Endpoint ID: #{endpoint_prop.Endpoint.id}
+    h5 Endpoint Ident: #{endpoint_prop.Endpoint.bw_process_ident}
+    h5 Endpoint Type: #{endpoint_prop.Endpoint.type}
+    h5(style=dclr) Endpoint Type: #{endpoint_prop.Endpoint.direction}
+    form.w-50(name="endpoint_prop_edit", method="post")
+      input.form-control(name="id",id="id",type="hidden",value=`${endpoint_prop.id}`)
+      input.form-control(name="orig_val", id="orig_val", type="hidden", value=endpoint_prop.value)
+      input.form-control(name="endpoint_id",id="endpoint_id",type="hidden",value=`${endpoint_prop.endpoint_id}`)
+      div.input-group-sm
+        span.col-form-label-sm End Point Property Name
+        input.form-control(name="name",id="name",type="text",value=(endpoint_prop.name || ""))
+      div.input-group-sm
+        span.col-form-label-sm End Point Property Value
+        input.form-control(name="value",id="value",type="text",value=(endpoint_prop.value || ""))
+      div.input-group-sm
+        span.col-form-label-sm Environment
+        select.form-control(name="env",id="env")
+          each env in env_list
+            option(value=env, selected=(env == endpoint_prop.env)) #{env}
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

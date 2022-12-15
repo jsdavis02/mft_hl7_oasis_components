@@ -1,0 +1,29 @@
+GET http://VIRPS0ESB30I03.hs.maricopa.gov:8100/producer_check?schedule_id=732
+Accept: application/json
+Authorization: Basic YWRtaW46b2FzaXM=
+###
+
+POST http://VIRPS0ESB30I03.hs.maricopa.gov:8100/producer_check
+Accept: application/json
+Authorization: Basic YWRtaW46b2FzaXM=
+Content-Type: application/json
+
+{
+  "schedule": {
+    "endpoint_id": 503,
+    "name": "",
+    "active": true,
+    "freq_type": "Specific_Date_and_Time",
+    "freq_interval": 0,
+    "sub_freq_interval": 0,
+    "spec_date": "2020-09-14",
+    "spec_time": "09:52:00",
+    "last_run": "1995-10-02T00:01:00-07:00",
+    "id": 732,
+    "sub_day_freq_type": "None"
+  },
+  "current_run_time": "2020-09-14T11:14:18.923-07:00"
+}
+
+
+###

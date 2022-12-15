@@ -1,0 +1,159 @@
+extends layout
+
+block content
+  //script(src='/javascripts/endpoint_view.js')
+  h1= title
+  h2 Import Item Details
+  form.w-50(name="migrate_import", method="post", action="/migrate/migrate_import")
+    input.form-control(name="import_file",id="import_file",type="hidden",value=`${import_file}`)
+    - for(let x in import_data.endpoints)
+      h3 Endpoints
+      table.table.table-striped
+        thead
+          tr
+            th Import?
+            th ID
+            th Name
+            th Description
+            th Type
+            th BW Process Identifier
+            th Direction
+        tbody
+          tr
+            td 
+              input.form-control(name="endpoint_" + import_data.endpoints[x].id, type="checkbox")
+            td #{import_data.endpoints[x].id}
+            td #{import_data.endpoints[x].name}
+            td #{import_data.endpoints[x].description}
+            td #{import_data.endpoints[x].type}
+            td #{import_data.endpoints[x].bw_process_ident}
+              input.form-control(name="bwendpoint_" + import_data.endpoints[x].id,type="hidden",value=`${import_data.endpoints[x].bw_process_ident}`)
+            td #{import_data.endpoints[x].direction}
+          - if(import_data.endpoints[x].hasOwnProperty('properties'))
+            tr 
+              td(colspan=7).col-6.font-weight-bold Properties
+            tr
+              td(colspan=7)
+                table.table.table-striped
+                  thead
+                    tr
+                      th Import?
+                      th ID
+                      th Name
+                      th Description
+                      th Environment
+                  tbody
+                  - for(let p in import_data.endpoints[x].properties)
+                    tr
+                      td
+                        input.form-control(name="ep_" + import_data.endpoints[x].id + "_prop_" + import_data.endpoints[x].properties[p].id, type="checkbox")
+                      td #{import_data.endpoints[x].properties[p].id}
+                      td #{import_data.endpoints[x].properties[p].name}
+                      td #{import_data.endpoints[x].properties[p].value}
+                      td #{import_data.endpoints[x].properties[p].env}
+          - if(import_data.endpoints[x].hasOwnProperty('schedules'))
+            tr
+              td(colspan=7).col-6.font-weight-bold Associated Schedules
+            tr
+              td(colspan=7)
+                table.table.table-striped
+                  thead
+                    tr
+                      th Import?
+                      th ID
+                      th Name
+                      th Frequency Type
+                      th Frequency Interval
+                      th Active?
+                  tbody
+                  - for(let s in import_data.endpoints[x].schedules)
+                    tr
+                      td
+                        input.form-control(name="es_" + import_data.endpoints[x].id + "_schedule_" + import_data.endpoints[x].schedules[s].id, type="checkbox")
+                      td #{import_data.endpoints[x].schedules[s].id}
+                      td #{import_data.endpoints[x].schedules[s].name}
+                      td #{import_data.endpoints[x].schedules[s].freq_type}
+                      td #{import_data.endpoints[x].schedules[s].freq_interval}
+                      td #{import_data.endpoints[x].schedules[s].active}
+    - for(let x in import_data.routes)
+      h3 Routes
+      table.table.table-striped
+        thead
+          tr
+            th Import?
+            th ID
+            th Name
+            th Description
+            th Type
+            th Producer
+            th Consumer
+        tbody
+          tr
+            td
+              input.form-control(name="route_" + import_data.routes[x].id, type="checkbox")
+            td #{import_data.routes[x].id}
+            td #{import_data.routes[x].name}
+            td #{import_data.routes[x].description}
+            td #{import_data.routes[x].type}
+            td #{import_data.routes[x].producer_id}
+              select.form-control(name="rproducer_" + import_data.routes[x].id + "_producer_id")
+                optgroup(label="New (Importing now)")
+                  each ne in import_data.endpoints
+                    option(value=ne.bw_process_ident) #{ne.bw_process_ident}
+                optgroup(label="Existing")
+                  each endpoint in producers
+                    option(value=endpoint.bw_process_ident) #{endpoint.bw_process_ident}
+            td #{import_data.routes[x].consumer_id}
+              select.form-control(name="rconsumer_" + import_data.routes[x].id + "_consumer_id")
+                optgroup(label="New (Importing now)")
+                  each ne in import_data.endpoints
+                    option(value=ne.bw_process_ident) #{ne.bw_process_ident}
+                optgroup(label="Existing")
+                  each endpoint in consumers
+                    option(value=endpoint.bw_process_ident) #{endpoint.bw_process_ident}
+        - if(import_data.routes[x].hasOwnProperty('properties'))
+          tr
+            td(colspan=7).col-6.font-weight-bold Properties
+          tr
+            td(colspan=7)
+              table.table.table-striped
+                thead
+                  tr
+                    th Import?
+                    th ID
+                    th Name
+                    th Description
+                    th Environment
+                tbody
+                - for(let p in import_data.routes[x].properties)
+                  tr
+                    td
+                      input.form-control(name="rp_" + import_data.routes[x].id + "_prop_" + import_data.routes[x].properties[p].id, type="checkbox")
+                    td #{import_data.routes[x].properties[p].id}
+                    td #{import_data.routes[x].properties[p].name}
+                    td #{import_data.routes[x].properties[p].value}
+                    td #{import_data.routes[x].properties[p].env}
+        - if(import_data.routes[x].hasOwnProperty('crits'))
+          tr
+            td(colspan=7).col-6.font-weight-bold Criterias
+          tr
+            td(colspan=7)
+              table.table.table-striped
+                thead
+                  tr
+                    th Import?
+                    th ID
+                    th Field
+                    th Value
+                    th Operator
+                tbody
+                - for(let p in import_data.routes[x].crits)
+                  tr
+                    td
+                      input.form-control(name="rc_" + import_data.routes[x].id + "_crits_" + import_data.routes[x].crits[p].id, type="checkbox")
+                    td #{import_data.routes[x].crits[p].id}
+                    td #{import_data.routes[x].crits[p].field}
+                    td #{import_data.routes[x].crits[p].value}
+                    td #{import_data.routes[x].crits[p].operator}
+    input.form-control.brn.btn-success(name="submit",type="submit",value="Run Import")
+          

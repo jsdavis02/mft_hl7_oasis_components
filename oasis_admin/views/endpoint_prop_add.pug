@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  script(src='/javascripts/endpoint_prop.js')
+  h1= title
+  h2 Add End Point Property
+    form.w-50(name="endpoint_prop_add", method="post")
+      input.form-control(name="endpoint_id",id="endpoint_id",type="hidden",value=`${endpoint.id}`)
+      div.input-group-lg
+        span.col-form-label-lg End Point Ident: #{endpoint.bw_process_ident}
+      div.input-group-lg
+        span.col-form-label-lg End Point Name: #{endpoint.name}
+      div.input-group-lg
+        span.col-form-label-lg Property Name
+        select.form-control(name="name",id="name")
+          each propname,propkey in propnames[endpoint.type]
+            option(value=propkey) #{propkey}
+          option Add New
+      each propname,propkey in propnames[endpoint.type]
+        div(id=propkey).alert-info Help: #{propname}
+      div(id="div_new_key").input-group-sm
+        span.col-form-label-sm End Point Property Name
+        input.form-control(name="new_name",id="new_name",type="text")
+      div.input-group-sm
+        span.col-form-label-sm End Point Property Value
+        input.form-control(name="value",id="value",type="text")
+      div.input-group-sm
+        span.col-form-label-sm Environment
+        select.form-control(name="env",id="env")
+          each env in env_list
+            option(value=env) #{env}
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

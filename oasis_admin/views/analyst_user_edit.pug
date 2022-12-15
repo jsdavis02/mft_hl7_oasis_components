@@ -1,0 +1,32 @@
+extends analyst_layout
+
+block content
+
+  h1= title
+  p Welcome to Edit User View
+  table
+    form(name="analyst_user_edit", method="post")
+      input.form-control(name="id",id="id",type="hidden",value=`${user.id}`)
+      div.input-group-sm
+        span.col-form-label-sm Username
+        input.form-control(name="username",id="username",type="text",value=`${user.username}`)
+      div.input-group-sm
+        span.col-form-label-sm Email
+        input.form-control(name="email",id="email",type="text",value=`${user.email}`)
+      div.input-group-sm
+        span.col-form-label-sm Password (leave blank to NOT change)
+        input.form-control(name="password",id="password",type="password")
+      div.input-group-sm
+        span.col-form-label-sm Role
+        select.form-control(name="role", id="role", disabled="disabled")
+          option(selected=('admin' === user.role)) admin
+          option(selected=('analyst' === user.role)) analyst
+      div.input-group-sm
+        span.col-form-label-sm Analyst Endpoints to View
+        select.form-control(name="endpoints[]", id="endpoints" multiple="multiple", size="20", disabled="disabled")
+          each endpoint in endpoints
+            - var s = false;
+            - if(eids.includes(endpoint.id)){ s = true; }
+            option(value=`${endpoint.id}`, selected=s) #{endpoint.bw_process_ident}
+      div.input-group-lg
+        input.form-control(name="submit", type="submit")

@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  link(rel='stylesheet', href='/stylesheets/multi-select.css')
+  script(src='/javascripts/jquery.multi-select.js')
+  script(src='/javascripts/user.js')
+  h1= title
+  p Welcome to Add User View
+  form.w-50(name="user_add", method="post")
+    div.input-group-sm
+      span.col-form-label-sm Username
+      input.form-control(name="username", id="username", type="text")
+    div.input-group-sm
+      span.col-form-label-sm Email
+      input.form-control(name="email", id="email", type="text")
+    div.input-group-sm
+      span.col-form-label-sm Password
+      input.form-control(name="password", id="password", type="password")
+    div.input-group-sm
+      span.col-form-label-sm Role
+      select.form-control(name="role", id="role")
+        option admin
+        option analyst
+    div(id="div_endpoints").input-group-sm
+      span.col-form-label-sm Analyst Endpoints to View
+      select.form-control(name="endpoints[]", id="endpoints" multiple="multiple")
+        each e_type, k in endpoints_by_type
+          optgroup(label=`${k}`) #{k}
+            each endpoint in e_type
+              option(value=`${endpoint.id}`) #{endpoint.bw_process_ident}
+    div.input-group-lg
+      input.form-control.btn.btn-success(name="submit", type="submit")

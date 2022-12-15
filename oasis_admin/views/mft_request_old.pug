@@ -1,0 +1,76 @@
+extends layout
+include flash_message
+
+block content
+  h1 STOP!
+  h2 The OASIS MFT request form has been retired.
+  h2
+  h3 Please use the Technical Service Catalog to request/update Managed File Transfers.
+  h3
+  h4 Sign on to Service-Now.
+  h4 Navigate to the Technical Service Catalog.
+  h4 Under Integration, choose Request Managed File Transfer.
+  h4 To expedite your request, please fill out fields in the request paying attention to what the required information is per field.
+  h4 Please provide full paths for source and destination of the file(s).
+  h4 Be sure to provide file names and/or file name patterns, if file names will change.
+  h4 Ensure that vendors provide hostname, port, userid and password to the MFT Administrator.
+  
+//extends layout
+//include flash_message
+//block content
+//
+//  h1= title
+//  h2 New File Transfer Job Request
+//  +flash_message
+//  form.w-50.form-group(name="mft_request", method="post")
+//    div.input-group-sm
+//      span.col-form-label-sm Endpoint Name (General name) 
+//      input.form-control(name="name", id="name", type="text")
+//    div.input-group-sm
+//      span.col-form-label-sm Description 
+//      textarea.form-control(name="description", id="description")
+//    div.input-group-sm
+//      span.col-form-label-sm Contact Name (Analyst or Business Owner) 
+//      input.form-control(name="contact_name", id="contact_name", type="text")
+//    div.input-group-sm
+//      span.col-form-label-sm Contact Email (Analyst or Department Group Email) 
+//      input.form-control(name="contact_email", id="contact_email", type="text")
+//    div.input-group-sm
+//      span.col-form-label-sm Contact Phone (Analyst or Department Manager Phone) 
+//      input.form-control(name="contact_phone", id="contact_phone", type="text")
+//    div.input-group-sm
+//      span.col-form-label-sm Producer (Location of source data such as: filesystem or sftp server, must provide hostname or IP, port and user credentials) 
+//      textarea.form-control(name="producer", id="producer")
+//    div.input-group-sm
+//      span.col-form-label-sm Consumer (Location of destination for the data such as: filesystem or sftp server, must provide hostname or IP, port and user credentials) 
+//      textarea.form-control(name="consumer", id="consumer")
+//    div.input-group-sm
+//      span.col-form-label-sm Data Transfer Requirements (Details for file operations during transfer, such as timestamping, renaming, encryption, signing etc) 
+//      textarea.form-control(name="data_transfer_req", id="data_transfer_req")
+//    div.input-group-sm
+//      span.col-form-label-sm Data Manipulation Requirements (Details for data changes during file transfer, such as deleting or concatenating data or file contents during transfer) 
+//      textarea.form-control(name="data_manipulation_req", id="data_manipulation_req")
+//    div.input-group-sm
+//      span.col-form-label-sm Archive Data Payload
+//      select.form-control(name="audit_persist", id="audit_persist")
+//        option YES
+//        option NO
+//    div.input-group-sm
+//      span.col-form-label-sm Delete Source File after Pickup
+//      select.form-control(name="delete_fs_source", id="delete_fs_source")
+//        option YES
+//        option NO
+//    div.input-group-sm
+//      span.col-form-label-sm File Transfer Confirmation Email (If required, email to confirm that files were transferred successfully) 
+//      input.form-control(name="confirmation_email", id="confirmation_email", type="text")
+//    div.input-group-sm
+//      span.col-form-label-sm No Files Found Notification Email (If required, email to notify when expected files are not found) 
+//      input.form-control(name="nofiles_email", id="nofiles_email", type="text")
+//    div.input-group-sm
+//      span.col-form-label-sm Schedule Requirements (Schedule details for file transfer)
+//      textarea.form-control(name="schedule", id="schedule")
+//    div.input-group-sm
+//      span.col-form-label-sm Documentation Link 
+//      input.form-control(name="doclink", id="doclink", type="text")
+//    div.input-group-lg
+//      input.form-control.btn.btn-success(name="submit", type="submit")

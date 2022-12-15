@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  script(src='/javascripts/route_prop.js')
+  h1= title
+  h2 Add Route Property
+    form.w-50(name="route_prop_add", method="post")
+      input.form-control(name="route_id", id="route_id", type="hidden", value=`${route.id}`)
+      div.input-group-sm
+        span.col-form-label-sm Associated Route ID: #{route.id}
+      div.input-group-sm
+        span.col-form-label-sm Associated Route Name: #{route.name}
+      div.input-group-lg
+        span.col-form-label-lg Property Name
+        select.form-control(name="name", id="name")
+          each propname,propkey in propnames[route.type]
+            option(value=propkey) #{propkey}
+          option Add New
+      each propname,propkey in propnames[route.type]
+        div(id=propkey).alert-info Help: #{propname}
+      div(id="div_new_key").input-group-sm
+        span.col-form-label-sm Route Property Name
+        input.form-control(name="new_name", id="new_name", type="text")
+      div.input-group-sm
+        span.col-form-label-sm Route Property Value
+        input.form-control(name="value", id="value", type="text")
+      div.input-group-sm
+        span.col-form-label-sm Environment
+        select.form-control(name="env", id="env")
+          each env in env_list
+            option(value=env) #{env}
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit", type="submit")

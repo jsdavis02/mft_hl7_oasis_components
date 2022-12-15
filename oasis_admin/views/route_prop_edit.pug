@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+  h1= title
+  h2(style="color: orange;") Edit Route Property
+    h4 Route Name: #{route_prop.Route.name}
+    h4 Route ID: #{route_prop.Route.id}
+    form.w-50(name="route_prop_edit", method="post")
+      input.form-control(name="id", id="id", type="hidden" ,value=`${route_prop.id}`)
+      input.form-control(name="route_id", id="route_id", type="hidden", value=`${route_prop.route_id}`)
+      div.input-group-sm
+        span.col-form-label-sm Route Property Name
+        input.form-control(name="name", id="name", type="text", value=(route_prop.name || ""))
+      div.input-group-sm
+        span.col-form-label-sm Route Property Value
+        input.form-control(name="value", id="value", type="text" ,value=(route_prop.value || ""))
+      div.input-group-sm
+        span.col-form-label-sm Environment
+        select.form-control(name="env", id="env")
+          each env in env_list
+            option(value=env, selected=(env == route_prop.env)) #{env}
+      div.input-group-lg
+        input.form-control.btn.btn-success(name="submit",type="submit")

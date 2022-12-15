@@ -1,0 +1,15 @@
+extends layout
+
+block content
+
+  h1= title
+  p Welcome to Code Table Entry View
+  a(href=`/code_tables/edit?id=${code_table.id}`) Edit
+  ul
+    li ID: #{code_table.id}
+    li Input: #{code_table.input}
+    li Output: #{code_table.output}
+    li Lookup: #{code_table.lookup_key}
+    li Environment: #{code_table.env}
+
+  

@@ -1,0 +1,143 @@
+extends layout
+
+block content
+  //script(src='/javascripts/endpoint_view.js')
+  h1= title
+  h2 Export Item Details
+  form.w-50(name="migrate_export", method="post", action="/migrate/migrate_export_3")
+    input.form-control(name="action",id="action",type="hidden",value=`${action}`)
+    input.form-control(name="main_item_type",id="main_item_type",type="hidden",value=`${main_item_type}`)
+    - for(let x in main_items)
+      h3 #{main_item_type}
+      table.table.table-striped
+        thead
+          tr
+            th ID
+            th Name
+            th Description
+            th Type
+            - if(main_item_type === 'Endpoint')
+              th BW Process Identifier
+              th Direction
+            - if(main_item_type === 'Route')
+              th Producer
+              th Consumer
+        tbody
+          tr
+            td #{main_items[x].id}
+              input.form-control(name="mainitems", id="mainitem_" + main_items[x].id, type="hidden", value=main_items[x].id)
+            td #{main_items[x].name}
+            td #{main_items[x].description}
+            td #{main_items[x].type}
+            - if(main_item_type === 'Endpoint')
+              td #{main_items[x].bw_process_ident}
+              td #{main_items[x].direction}
+            - if(main_item_type === 'Route')
+              td #{main_items[x].Producer.name}
+              td #{main_items[x].Consumer.name}
+          - if(main_items[x].hasOwnProperty('properties'))
+            tr 
+              td(colspan=6).col-6.font-weight-bold Properties
+            tr
+              td(colspan=6)
+                table.table.table-striped
+                  thead
+                    tr
+                      th ID
+                      th Name
+                      th Description
+                      th Environment
+                  tbody
+                  - for(let p in main_items[x].properties)
+                    tr
+                      td #{main_items[x].properties[p].id}
+                      td #{main_items[x].properties[p].name}
+                      td #{main_items[x].properties[p].value}
+                      td #{main_items[x].properties[p].env}
+          - if(main_items[x].hasOwnProperty('schedules'))
+            tr
+              td(colspan=6).col-6.font-weight-bold Associated Schedules
+            tr
+              td(colspan=6)
+                table.table.table-striped
+                  thead
+                    tr
+                      th ID
+                      th Name
+                      th Frequency Type
+                      th Frequency Interval
+                      th Active?
+                  tbody
+                  - for(let s in main_items[x].schedules)
+                    tr
+                      td #{main_items[x].schedules[s].id}
+                      td #{main_items[x].schedules[s].name}
+                      td #{main_items[x].schedules[s].freq_type}
+                      td #{main_items[x].schedules[s].freq_interval}
+                      td #{main_items[x].schedules[s].active}
+          - if(main_item_type === 'Route')
+            tr
+              td(colspan=6).col-6.font-weight-bold Associated Endpoints (checking here will include all props and schedules for endpoint)
+            tr
+              td(colspan=6)
+                table.table.table-striped
+                  thead
+                    tr
+                      th ID
+                      th Name
+                      th Description
+                      th Type
+                      th BW Process Identifier
+                      th Direction
+                  tbody
+                    tr
+                      td
+                        input.form-control(name="endpoint_" + main_items[x].Producer.id, type="checkbox")
+                      td #{main_items[x].Producer.id}
+                      td #{main_items[x].Producer.name}
+                      td #{main_items[x].Producer.description}
+                      td #{main_items[x].Producer.type}
+                      td #{main_items[x].Producer.bw_process_ident}
+                      td #{main_items[x].Producer.direction}
+                    tr
+                      td
+                        input.form-control(name="endpoint_" + main_items[x].Consumer.id, type="checkbox")
+                      td #{main_items[x].Consumer.id}
+                      td #{main_items[x].Consumer.name}
+                      td #{main_items[x].Consumer.description}
+                      td #{main_items[x].Consumer.type}
+                      td #{main_items[x].Consumer.bw_process_ident}
+                      td #{main_items[x].Consumer.direction}
+          - if(main_item_type === 'Endpoint')
+            
+            tr
+              td(colspan=6).col-6.font-weight-bold Associated Routes (checking here will include all props for route)
+            tr
+              td(colspan=6)
+                table.table.table-striped
+                  thead
+                    tr
+                      th Export?
+                      th ID
+                      th Name
+                      th Description
+                      th Type
+                  tbody
+                    - for(let pr in main_items[x].producer_routes)
+                      tr
+                        td
+                          input.form-control(name="route_" + main_items[x].producer_routes[pr].id, type="checkbox")
+                        td #{main_items[x].producer_routes[pr].id}
+                        td #{main_items[x].producer_routes[pr].name}
+                        td #{main_items[x].producer_routes[pr].description}
+                        td #{main_items[x].producer_routes[pr].type}
+                    - for(let pc in main_items[x].consumer_routes)
+                      tr
+                        td
+                          input.form-control(name="route_" + main_items[x].consumer_routes[pc].id, type="checkbox")
+                        td #{main_items[x].consumer_routes[pc].id}
+                        td #{main_items[x].consumer_routes[pc].name}
+                        td #{main_items[x].consumer_routes[pc].description}
+                        td #{main_items[x].consumer_routes[pc].type}
+    input.form-control.btn.btn-success(name="submit",type="submit",value="Generate Export")
+          

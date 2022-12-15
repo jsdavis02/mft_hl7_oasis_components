@@ -1,0 +1,107 @@
+extends layout
+
+block content
+  h1= title
+  h2 Route View
+  
+  h4(id="config_header") Configuration
+  div.list-group-item.bg-white
+    ul
+      li ID: #{route.id}
+      li Active: #{route.active}
+      li Name: #{route.name}
+      li Description: #{route.description}
+      li Message Producer ID: 
+          a(href=`/endpoints/view?id=${route.producer_id}`) #{route.producer_id}
+      li Message Consumer ID: 
+          a(href=`/endpoints/view?id=${route.consumer_id}`) #{route.consumer_id}
+      li Producer Message Type: #{route.producer_messagetypemessagecode}
+      li Producer Message Trigger: #{route.producer_messagetypetriggerevent}
+      li Consumer Message Type: #{route.consumer_messagetypemessagecode}
+      li Consumer Message Trigger: #{route.consumer_messagetypetriggerevent}
+      li Has Route Criteria (Filters): #{route.hasCriteria}
+      li Route is a message split: #{route.hasSplit}
+      li Has Route Translation: #{route.hasTranslation}
+
+  h4(id="endpoints_header") Associated End Points
+  table.table.table-striped
+    thead
+      tr
+        th Actions
+        th ID
+        th BW Process Identifier
+        th Active
+        th Endpoint Name
+        th Direction
+        th Organization
+        th Software
+        th Description
+    tbody
+      tr
+        td.m-md-auto
+          a.mx-1.my-1.btn.btn-info.rounded(href=`/endpoints/endpoint_analyst_view?id=${route.Producer.id}`) View 
+        td #{route.Producer.id}
+        td #{route.Producer.bw_process_ident}
+        td #{route.Producer.active}
+        td #{route.Producer.endpoint_name}
+        td #{route.Producer.direction}
+        td #{route.Producer.organization}
+        td #{route.Producer.software}
+        td.w-25 #{route.Producer.description}
+      tr
+        td.m-md-auto
+          a.mx-1.my-1.btn.btn-info.rounded(href=`/endpoints/endpoint_analyst_view?id=${route.Consumer.id}`) View 
+        td #{route.Consumer.id}
+        td #{route.Consumer.bw_process_ident}
+        td #{route.Consumer.active}
+        td #{route.Consumer.endpoint_name}
+        td #{route.Consumer.direction}
+        td #{route.Consumer.organization}
+        td #{route.Consumer.software}
+        td.w-25 #{route.Consumer.description}
+  h4(id="properties_header").my-3 Associated Properties - 
+    a.btn.btn-success.rounded(href=`/route_props/add?route_id=${route.id}`) Add
+  table.table.table-striped
+    thead
+      tr
+        th ID
+        th Route ID
+        th Name
+        th Value
+        th Environment
+    tbody
+      each route_prop in route_props
+        tr
+          td #{route_prop.id}
+          td #{route_prop.route_id}
+          td #{route_prop.name}
+          td #{route_prop.value}
+          td #{route_prop.env}
+        
+  h4(id="criterias_header").my-3 Associated Route Criteria - 
+    a.btn.btn-success.rounded(href=`/route_criterias/add?route_id=${route.id}`) Add
+  div.alert-warning.w-50
+    p If route has multiple criteria they are grouped by the group key (including if blank). All the criteria in a group have to have the same method and the same group operator of AND or OR. The criteria logic will choose method and group operator for the group from the first one in the group list.
+  table.table.table-striped
+    thead
+      tr
+        th ID
+        th Route ID
+        th Field
+        th Value
+        th Condition Operator
+        th Method
+        th Criteria Group Key
+        th Criteria Group Operator
+        each route_criteria in route_criterias
+          tr  
+            td #{route_criteria.id}
+            td #{route_criteria.route_id}
+            td #{route_criteria.field}
+            td #{route_criteria.value}
+            td #{route_criteria.operator}
+            td #{route_criteria.method}
+            td #{route_criteria.group_key}
+            td #{route_criteria.group_operator}
+    
+          

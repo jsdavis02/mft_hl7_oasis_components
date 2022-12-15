@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    script(src='/javascripts/jquery-3.4.1.min.js')
+    script(src='/javascripts/bootstrap.min.js')
+  body
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">OASIS - <span class="btn-info p-1 rounded">#{process.env.NODE_ENV.toUpperCase()}</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+          <a class="nav-item nav-link" href="/users/analyst">Account</a>
+          <a class="nav-item nav-link" href="/audit/analyst">Audit Log</a>
+          <a class="nav-item nav-link" href="/endpoints/analyst">Your Endpoints</a>
+          <a class="nav-item nav-link" href="/endpoints/mft_request">New MFT Request</a>
+          <a class="nav-item nav-link" href="/auth/login">Login</a>
+          <a class="nav-item nav-link" href="/auth/logout">Logout</a>
+        </div>
+      </div>
+    </nav>
+    block content

@@ -1,0 +1,75 @@
+extends layout
+include flash_message
+block content
+  //script(src='/javascripts/endpoint_prop_delete.js')
+  //script(src='/javascripts/mft_sched_del.js')
+  h1= title
+  h2 Integration Request View
+  +flash_message
+  //div.list-group-item
+    nav.navbar.navbar-light
+      a.btn.btn-edit.rounded(href=`/requests/edit?id=${int_request.id}`) Edit
+      a.btn.delete.btn-danger.rounded(href=`/requests/del?id=${int_request.id}`) Delete
+  
+  //h4(id="request") Request
+  div.list-group-item.bg-white.mb-lg-auto
+    ul
+      li ID: #{int_request.id}
+      //li Status: #{int_request.status}
+      li Contact Name: #{int_request.contact_name}
+      li Contact Email: #{int_request.contact_email}
+      li Contact Phone: #{int_request.contact_phone}
+      li Description: #{int_request.description}
+      li Producer Description: #{int_request.producer_description}
+      li Producer Type: #{int_request.producer_type}
+      li Consumer Description: #{int_request.consumer_description}
+      li Consumer Type: #{int_request.consumer_type}
+      li Data Transfer Requirement: #{int_request.data_transfer_req}
+      li Data Manipulation Requirement: #{int_request.data_manipulation_req}
+      li Document Link: #{int_request.doclink}
+      
+  h4(id="properties_header").my-3 Associated Properties
+      //a.btn.btn-success.rounded(href=`/int_request_props/add?int_request_id=${int_request.id}`) Add
+  table.table.table-striped
+    thead
+      tr
+        //th Actions
+        th ID
+        th End Point ID
+        th Name
+        th Value
+        th Environment
+    tbody
+      each int_request_prop in int_request.properties
+        tr
+          //td
+            a.mx-1.my-1.btn.btn-info.rounded(href=`/int_request_props/view?id=${int_request_prop.id}`) View
+            a.mx-1.my-1.btn.btn-edit.rounded(href=`/int_request_props/edit?id=${int_request_prop.id}`) Edit 
+            a.mx-1.my-1.btn.btn-danger.rounded(href=`/int_request_props/del?id=${int_request_prop.id}`).prop_delete Delete
+          td #{int_request_prop.id}
+          td #{int_request_prop.int_request_id}
+          td #{int_request_prop.name}
+          td #{int_request_prop.value}
+          td #{int_request_prop.env}
+            
+  
+      
+  <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Delete Request!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          h4 This will delete the request and all it's properties are you sure?
+        </div>
+        <div class="modal-footer">
+          <button id="no-del" type="button" class="btn btn-secondary" data-dismiss="modal">NO!</button>
+            <button id="yes-del" type="button" class="btn btn-primary">Absolutely!</button>
+        </div>
+      </div>
+    </div>
+  </div>        
